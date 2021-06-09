@@ -1,6 +1,6 @@
 import requests
 
-BASE = "https://127.0.0.1:5000/appointment/"
+BASE = "http://127.0.0.1:5000/"
 
-response = requests.put(BASE + "DioPorco")
+response = requests.get(BASE + "appointment/1")
 print(response.json())

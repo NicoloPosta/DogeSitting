@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from flask_restful import Api, Resource, reqparse, abort
@@ -6,20 +6,47 @@ from flask_restful import Api, Resource, reqparse, abort
 app = Flask(__name__)
 api = Api(app)
 appointment_put_parser = reqparse.RequestParser()
-
+appointment_put_parser.add_argument("user_type", type=bool)
+appointment_put_parser.add_argument("name", type=str, help="Nome dell'utente non inserito")
+appointment_put_parser.add_argument("email", type=str, help="Email non inserita")
+appointment_put_parser.add_argument("passwd", type=str, help="Password non inserita")
 
 @app.route('/')
 def index():
     return render_template('index.html')
 
 
+
 class Appointment(Resource):
-    def put(self):
-        args = appointment_put_parser.parse_args()
-        return {args}, 200
+    def post(self):
+        request = appointment_put_parser.parse_args()
+        users = UserTable(email=request['email'], username=request['name'], password=request['passwd'], user_type=request['user_type'])
+        db.session.add(users)
+        db.session.commit()
+        return {"email":request['email'],
+                "username":request['name'],
+                "password":request['passwd'],
+                "user_type":request['user_type'],
+        }
+
+    
+class AppointmentList(Resource):
+    def get(self, appointment_number):
+        tmp = UserTable.query.all()
+        tmp2 = []
+        for i in tmp:
+            dictionary = {"email":i.email,
+                          "username": i.username,
+                          "password": i.password,
+                          "user_type": i.user_type
+                            }
+            tmp2.append(dictionary)
+
+        return {"User": tmp2}
 
 
 api.add_resource(Appointment, "/appointment")
+api.add_resource(AppointmentList, "/appointment/<int:appointment_number>")
 
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
