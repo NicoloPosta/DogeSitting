@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
-from flask_restful import Api, Resource, reqparse, abort
+from flask_restful import Api, Resource, marshal_with, reqparse, abort, fields
 
 app = Flask(__name__)
 api = Api(app)
@@ -15,7 +15,12 @@ appointment_put_parser.add_argument("passwd", type=str, help="Password non inser
 def index():
     return render_template('index.html')
 
-
+resource_fields = {
+    'email': fields.String,
+    'username': fields.String,
+    'password': fields.String,
+    'user_type':  fields.Boolean
+}
 
 class Appointment(Resource):
     def post(self):
@@ -29,20 +34,12 @@ class Appointment(Resource):
                 "user_type":request['user_type'],
         }
 
-    
+
 class AppointmentList(Resource):
+    @marshal_with(resource_fields)
     def get(self, appointment_number):
         tmp = UserTable.query.all()
-        tmp2 = []
-        for i in tmp:
-            dictionary = {"email":i.email,
-                          "username": i.username,
-                          "password": i.password,
-                          "user_type": i.user_type
-                            }
-            tmp2.append(dictionary)
-
-        return {"User": tmp2}
+        return tmp
 
 
 api.add_resource(Appointment, "/appointment")
