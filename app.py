@@ -15,10 +15,10 @@ user_put_parser.add_argument("passwd", type=str, help="Password non inserita")
 schedule_put_parser = reqparse.RequestParser()
 schedule_put_parser.add_argument("dogsitter_id", type=int)
 schedule_put_parser.add_argument("location", type=str)
-#schedule_put_parser.add_argument("date_start", type=lambda x: datetime.strptime(x,'%Y-%m-%dT%H:%M'))
-#schedule_put_parser.add_argument("date_end", type=lambda x: datetime.strptime(x,'%Y-%m-%dT%H:%M'))
-schedule_put_parser.add_argument("date_start", type=str)
-schedule_put_parser.add_argument("date_end", type=str)
+schedule_put_parser.add_argument("date_start", type=lambda x: datetime.strptime(x,'%Y-%m-%dT%H:%M'))
+schedule_put_parser.add_argument("date_end", type=lambda x: datetime.strptime(x,'%Y-%m-%dT%H:%M'))
+#schedule_put_parser.add_argument("date_start", type=str)
+#schedule_put_parser.add_argument("date_end", type=str)
 schedule_put_parser.add_argument("max_dogs", type=int)
 
 
@@ -54,13 +54,10 @@ resource_fields_users = {
 class AddSchedule(Resource):
     def post(self):
         request = schedule_put_parser.parse_args()
-        print(request['date_start'])
-        tempo = datetime.strptime(request['date_start'],'%Y-%m-%dT%H:%M')
-        print(tempo)
 
         #controlla se la lista è vuote e inizializza il primo elemento id a 0
         if not AvailableDogsitter.query.all():
-            schedule = AvailableDogsitter(appointment_id=0,location=request['location'], appointment_start=request['date_start'], appointment_end=request['date_end'], max_dog_number=request['max_dogs'])
+            schedule = AvailableDogsitter(appointment_id=0, dogsitter_id=request['dogsitter_id'], location=request['location'], max_dog_number=request['max_dogs'], appointment_start=request['date_start'], appointment_end=request['date_end'])
             try:
                 db.session.add(schedule)
                 db.session.commit()
@@ -70,7 +67,7 @@ class AddSchedule(Resource):
         #se la lista non è vuota tutti gli id successivi saranno impostati ad il valore dell'id precedente aumentato di 1 
         else:
             max_id = db.session.query(db.func.max(AvailableDogsitter.appointment_id)).scalar()
-            schedule = AvailableDogsitter(appointment_id=(max_id+1),location=request['location'], appointment_start=request['date_start'], appointment_end=request['date_end'], max_dog_number=request['max_dogs'])
+            schedule = AvailableDogsitter(appointment_id=(max_id+1), dogsitter_id=request['dogsitter_id'], location=request['location'], max_dog_number=request['max_dogs'], appointment_start=request['date_start'], appointment_end=request['date_end'])
             try:
                 db.session.add(schedule)
                 db.session.commit()
@@ -101,7 +98,7 @@ class AddUsers(Resource):
                 db.session.commit()
                 return 200
             except:
-                return 'Non è stato possibile inserire i dati',400
+                return 'Non è stato possibile inserire i dati del primo utente',400
         #se la lista non è vuota tutti gli id successivi saranno impostati ad il valore dell'id precedente aumentato di 1 
         else:
             max_id = db.session.query(db.func.max(UserTable.id)).scalar()
