@@ -1,139 +1,42 @@
-<html>
-    <head>
-        <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
-        <script>
-            // chiamata per invio di dati
-            $(function() {
-                // al click del bottone viene fatta partire la chiamata AJAX
-                $('#Conferma').click(function() {
-                    $.ajax({
-                        url: '/api/add_users',
-                        data: $('#form1').serialize(),    // prende i dati del form
-                        type: 'POST',
+{% extends "bootstrap/base.html" %}
 
-                        success: function(response) {
-                            risposta = JSON.parse(response);    // converte la risposta in JSON
+{% block title %}
+Demo App
+{% endblock %}
 
-                            alert(risposta.message);            // stampa il messaggio di successo
-                            $('#error_box').empty();
-                        },
+{% block styles %}
+{{super()}}
+<link rel="stylesheet" href="{{url_for('.static', filename='starter-template.css')}}">
+{% endblock %}
 
-                        error: function(error) {
-                            errore = JSON.parse(error.responseText)     // converte la risposta in JSON
-
-                            // crea il tag span dove scrivere l'errore
-                            var testo = $("<span></span>")
-                                        .text(errore.error)
-                                        .css({
-                                            'color': "red",
-                                            'font-weight': 'bold'
-                                        })
-
-                            $('#error_box').html(testo)             // sovrascive il contenuto del div per gli errori
-                        }
-                    });
-                });
-            });
-        </script>
-
-
-        <script>
-            // chiamata per ricezioni dati
-            $(function() {
-                // al click del bottone viene fatta partire la chiamata AJAX
-                $('#query_all').click(function() {
-                    $.ajax({
-                        url: '/api/users',
-                        type: 'GET',
-                        
-                        success: function(response) {
-                            console.log(response)
-                            //risposta = JSON.parse(response);    // converte la risposta in JSON
-                            //dati = risposta.rep;
-
-                            var tabella = $("<table></table>");
-
-                            response.forEach(element => {
-                                var riga = $("<tr></tr>");
-
-                                var col1 = $("<td></td>").text(element.id);
-                                var col2 = $("<td></td>").text(element.email);
-                                var col3 = $("<td></td>").text(element.username);
-                                var col4 = $("<td></td>").text(element.password);
-                                var col5 = $("<td></td>").text(element.user_type);
-
-                                riga.append(col1, col2, col3, col4, col5);
-                                tabella.append(riga);
-                            });
-
-                            $("#dati").html(tabella);
-                        },
-
-                        error: function(error) {
-                            errore = JSON.parse(error.responseText)     // converte la risposta in JSON
-                        }
-                    });
-                });
-
-                $('#CercaUtente').click(function(){
-                    $.ajax({
-                        url: 'api/user/'+$("#user_number").val(),
-                        type: 'GET',
-                        success: function(response){
-
-                            var tabella = $("<table></table>");
-                            var riga = $("<tr></tr>");
-
-                            var col1 = $("<td></td>").text(response.id);
-                            var col2 = $("<td></td>").text(response.email);
-                            var col3 = $("<td></td>").text(response.username);
-                            var col4 = $("<td></td>").text(response.password);
-                            var col5 = $("<td></td>").text(response.user_type);
-
-                            riga.append(col1, col2, col3, col4, col5);
-                            tabella.append(riga);
-
-                            $("#dati").html(tabella);
-                            
-                        },
-
-                        error: function(error) {
-                            errore = JSON.parse(error.responseText)     // converte la risposta in JSON
-                        }
-                    });
-                })
-            });
-        </script>
-
-
-    </head>
-    
-    <body>
-
-        <form id="form1">
-            <label for="user_type">Dogsitter</label>
-            <input type="checkbox" name="user_type"><br>
-            <label for="email">E-Mail</label>
-            <input type="text" name="email" id="email"><br>
-            <label for="name">Nome Utente</label>
-            <input type="text" name="name" id="name"><br>
-            <label for="passwd">Password</label>
-            <input type="password" name="passwd" id="passwd"><br>
-            <input type="button" id="Conferma" value="Invia"></input><br>
-        </form><br>
-        <div id="error_box"></div>
-        <input type="button" id="query_all" value = "Mostra tutti gli Utenti"></input>
-        <div id="dati">
-            <label for="user_number">Seleziona un utente specifico</label>
-            <input type="text" name="user_number" id="user_number"><br>
-            <input type="button" id= "CercaUtente" value="Conferma">
+{% block content %}
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">Project name</a>
         </div>
-        <div>
-            <a href="appointment">
-                <input type="button" id="appointment" value="Prenotati ora!!!">
-            </a>
-            
-        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="#">Home</a></li>
+            <li><a href="{{ url_for('login') }}">Login</a></li>
+            <li><a href="{{ url_for('signup') }}">Sign Up</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
 
-    </body>
-</html>
+    <div class="container">
+
+      <div class="starter-template">
+        <h1>Bootstrap starter template</h1>
+        <p class="lead">Use this document as a way to quickly start any new project.<br> All you get is this text and a mostly barebones HTML document.</p>
+      </div>
+
+    </div><!-- /.container -->
+{% endblock %}
