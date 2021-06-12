@@ -31,6 +31,17 @@ db.create_all()
 def load_user(user_id):
     return User.query.get(int(user_id))
 
+
+class UserForm(FlaskForm):
+    name = StringField('Nome', validators=[Length(min=1, max=15)])
+    surname = StringField('Cognome', validators=[Length(min=1, max=25)])
+    sex = StringField('Sesso', validators=[Length(min=1, max=15)])
+    tel_number = IntegerField('Numero di telefono')
+    birth_date = DateField('Data di nascita')
+    description = StringField('Descrizione', validators=[Length(min=1, max=200)])
+    submit = SubmitField('Modifica')
+
+
 class LoginForm(FlaskForm):
     username = StringField('username', validators=[InputRequired(), Length(min=4, max=15)])
     password = PasswordField('password', validators=[InputRequired(), Length(min=8, max=80)])
@@ -41,7 +52,6 @@ class RegisterForm(FlaskForm):
     username = StringField('username', validators=[InputRequired(), Length(min=4, max=15)])
     password = PasswordField('password', validators=[InputRequired(), Length(min=8, max=80)])
     usertype = BooleanField('tipo di utenza')
-    #signup = SubmitField('Registrati')
 
 class AppointmentForm(FlaskForm):
     dog_number = IntegerField('Numero Cani', validators=[InputRequired(), validators.NumberRange(min=1, max=99, message="Numero di cani non valido...")])
@@ -156,6 +166,36 @@ def login():
                 login_form.password.errors = [login_return['password']]
 
     return render_template('login.html', form=login_form)
+
+
+
+@app.route('/profile', methods=['GET', 'POST'])
+@login_required
+def profile():
+    profile_form = UserForm()
+
+    if profile_form.submit.data:
+        return redirect(url_for('update_user_profile'))
+
+    return render_template('user_profile.html', id=current_user.id, form=profile_form, nome=current_user.name, sesso=current_user.sex ,cognome=current_user.surname, numero_telefono=current_user.tel_number, data_nascita=current_user.birth_date, descrizione=current_user.description)
+
+@app.route('/update_user_profile', methods=['GET','POST'])
+@login_required
+def update_user_profile():
+    profile_form = UserForm()
+
+    if profile_form.validate_on_submit():
+        user = User.query.filter_by(id=current_user.id).first()
+        user.name = profile_form.name.data
+        user.surname = profile_form.name.data
+        user.sex = profile_form.sex.data
+        user.birth_date = profile_form.birth_date.data
+        user.tel_number = profile_form.tel_number.data
+        user.description = profile_form.description.data
+        db.session.commit()
+        return redirect(url_for('profile'))
+
+    return render_template('update_user_profile.html', id=current_user.id, form=profile_form, nome=current_user.name, sesso=current_user.sex ,cognome=current_user.surname, numero_telefono=current_user.tel_number, data_nascita=current_user.birth_date, descrizione=current_user.description)
 
 
 @app.route('/signup', methods=['GET','POST'])
@@ -273,8 +313,15 @@ def profile_login():
     else:
         return json.dumps({'password': "Password errata"}), 400
 
+'''
+@app.route('/api/update_user_profile', methods=['POST'])
+@login_required
+def update_user_profile():
 
+    requested_user_id = request.json['id']
 
+    requested_profile = User.query.filter_by(id=requested_user_id).first()
+'''
 #Utils forse da cambiare
 
 

@@ -36,15 +36,15 @@ Dashboard
       </div>
     </nav>
     <div>
-      <form method="POST" action="/profile">
+      <form method="POST" action="/update_user_profile">
         {{ form.hidden_tag() }}
-        {{ wtf.form_field(form.name, disabled=True, value=nome) }}
-        {{ wtf.form_field(form.surname, disabled=True, value=cognome) }}
-        {{ wtf.form_field(form.sex, disabled=True, value=sesso) }}
-        {{ wtf.form_field(form.tel_number, disabled=True, value=numero_telefono) }}
-        {{ wtf.form_field(form.birth_date, disabled=True, value=data_nascita) }}
-        {{ wtf.form_field(form.description, disabled=True, value=descrizione) }}
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Modifica</button>
+        {{ wtf.form_field(form.name, value=nome) }}
+        {{ wtf.form_field(form.surname, value=cognome) }}
+        {{ wtf.form_field(form.sex, value=sesso) }}
+        {{ wtf.form_field(form.tel_number, value=numero_telefono) }}
+        {{ wtf.form_field(form.birth_date, value=data_nascita) }}
+        {{ wtf.form_field(form.description, value=descrizione) }}
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Conferma</button>
       </form>
     </div>
    

@@ -11,14 +11,13 @@ class User(UserMixin, db.Model):
     username = db.Column(db.String(50), nullable=False, unique=True)
     password = db.Column(db.String(80), nullable=False)
     user_type = db.Column(db.Boolean, nullable=False)#0 per utenti base, 1 per dogsitter
-    '''
     sex = db.Column(db.String(), default=None)
     tel_number = db.Column(db.Integer, default=None)
     name = db.Column(db.String(20), default=None)
     surname = db.Column(db.String(20), default=None)
     birth_date = db.Column(db.Date, default=None)
     description = db.Column(db.String(200), default=None)
-    '''
+
     def __repr__(self):
         return f"User('{self.id}', '{self.username}', '{self.password}', '{self.email}', '{self.user_type}')"
 
