@@ -44,7 +44,7 @@ Dashboard
         {{ wtf.form_field(form.tel_number, disabled=True, value=numero_telefono) }}
         {{ wtf.form_field(form.birth_date, disabled=True, value=data_nascita) }}
         {{ wtf.form_field(form.description, disabled=True, value=descrizione) }}
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Modifica</button>
+        {{ wtf.form_field(form.submit, value="Modifica") }}
       </form>
     </div>
    

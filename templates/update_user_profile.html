@@ -44,7 +44,7 @@ Dashboard
         {{ wtf.form_field(form.tel_number, value=numero_telefono) }}
         {{ wtf.form_field(form.birth_date, value=data_nascita) }}
         {{ wtf.form_field(form.description, value=descrizione) }}
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Conferma</button>
+        {{ wtf.form_field(form.submit, value="Conferma") }}
       </form>
     </div>
    
