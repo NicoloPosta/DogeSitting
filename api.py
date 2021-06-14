@@ -50,6 +50,49 @@ def profile_login():
     else:
         return json.dumps({'password': "Password errata"}), 400
 
+
+@app.route('/api/appointment_list', methods=['POST'])
+def api_appointment_list():
+
+    search_data = request.json
+
+    end_hour = int(time.fromisoformat(search_data['time_end']).strftime("%H"))
+
+    start_hour = int(time.fromisoformat(search_data['time_start']).strftime("%H"))
+
+    search_result = AvailableDogsitter.query.filter_by(location=search_data['location'],appointment_day=date.fromisoformat(search_data['date'])).all()
+        
+    if search_result == []:
+        return {'no_results': "Non ho trovato appuntamenti che soddisfano la ricerca in quel giorno o luogo"}, 400
+
+    return_list=[]
+
+    for appointment in search_result:
+
+        appointment_id = appointment.id
+
+
+        hours = Dog_per_Hours.query.filter_by(appointment_id=appointment_id).all()
+        
+        if hours[0].start <= start_hour and hours[-1].end >= end_hour:
+            #significa che l'appuntamento può essere preso
+            hour_count = end_hour - start_hour
+            count = 0
+            for hour in hours:
+                if (hour.start >= start_hour) and (hour.end <= end_hour):
+                    if hour.available_dog_number >= search_data['dog_number']:
+                        count += 1
+
+            if count == hour_count:
+                return_list.append(appointment.as_dict())
+    
+    if return_list == []:
+        return {'no_results': "Non ho trovato appuntamenti che soddisfano la fascia oraria richiesta o i cani richiesti"}, 400
+
+
+    return {'return_list': return_list}, 200
+
+
 @app.route('/api/add_appointment', methods=['POST'])
 def add_appointment_api():
 
@@ -79,7 +122,23 @@ def add_appointment_api():
 
     new_appointment = AvailableDogsitter(dogsitter_id=appointment_data['dogsitter_id'] , max_dog_number=appointment_data['dog_number'], location=appointment_data['location'], appointment_day=date.fromisoformat(appointment_data['date']), appointment_start=time.fromisoformat(appointment_data['time_start']), appointment_end=time.fromisoformat(appointment_data['time_end']))
 
+    
+    end_hour = int(time.fromisoformat(appointment_data['time_end']).strftime("%H"))
+
+    start_hour = int(time.fromisoformat(appointment_data['time_start']).strftime("%H"))
+
+    hour_number = end_hour - start_hour
+
     db.session.add(new_appointment)
     db.session.commit()
+
+
+    for i in range(hour_number):
+        
+        new_dog_per_hour = Dog_per_Hours(appointment_id=new_appointment.id, start=start_hour, end=(start_hour+1), available_dog_number=new_appointment.max_dog_number)
+        start_hour += 1
+        db.session.add(new_dog_per_hour)
+        db.session.commit()
+
 
     return json.dumps({'appointment_id': new_appointment.id}), 200

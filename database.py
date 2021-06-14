@@ -50,10 +50,18 @@ class AvailableDogsitter(db.Model):
             'dogsitter_id': self.dogsitter_id,
             'location': self.location,
             'max_dog_number': self.max_dog_number,
-            'appointment_day': self.appointment_day,
-            'appointment_start': self.appointment_start,
-            'appointment_end': self.appointment_end
+            'appointment_day': self.appointment_day.isoformat(),
+            'appointment_start': self.appointment_start.isoformat(),
+            'appointment_end': self.appointment_end.isoformat()
         }
+
+
+class Dog_per_Hours(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    appointment_id = db.Column(db.Integer, db.ForeignKey('availabledogsitter.id'))
+    start = db.Column(db.Integer, nullable=False)
+    end = db.Column(db.Integer, nullable=False)
+    available_dog_number = db.Column(db.Integer, nullable=False)
 
 
 class DogsittingAppointment(db.Model):

@@ -5,6 +5,13 @@ from wtforms.fields.html5 import DateTimeLocalField
 from wtforms.validators import InputRequired, Email, Length
 
 
+class SearchForm(FlaskForm):
+    location = StringField('Posizione', validators=[InputRequired()])
+    date = DateField('Data appuntamento', validators=[InputRequired()])
+    dog_number = IntegerField('Numero Cani', validators=[InputRequired(), validators.NumberRange(min=1, max=99, message="Numero di cani non valido...")])
+    time_start = TimeField('Orario inizio', format='%H:%M', validators=[InputRequired()])
+    time_end = TimeField('Orario fine', format='%H:%M', validators=[InputRequired()])
+
 class UserForm(FlaskForm):
     name = StringField('Nome', validators=[Length(min=1, max=15)])
     surname = StringField('Cognome', validators=[Length(min=1, max=25)])

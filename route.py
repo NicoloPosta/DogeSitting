@@ -42,6 +42,37 @@ def add_appointment():
         return redirect(url_for('dashboard'))
 '''
 
+
+
+@app.route('/appointment_list', methods=['GET','POST'])
+def appointment_list():
+    search_form = SearchForm()
+
+    if search_form.validate_on_submit():
+
+        search_return = requests.post('http://localhost:5000/api/appointment_list',
+            json={
+                'location': search_form.location.data,
+                'date': search_form.date.data.isoformat(),
+                'dog_number': search_form.dog_number.data,
+                'time_start': search_form.time_start.data.isoformat(),
+                'time_end': search_form.time_end.data.isoformat()
+            }
+        )
+
+        if search_return.ok:
+            search_return = search_return.json()
+            return render_template('appointment_list.html', appointments_list=search_return['return_list'], form=search_form)
+        else:
+            search_return = search_return.json()
+            if 'no_results' in search_return:
+                search_form.location.errors = [search_return['no_results']]
+
+    return render_template('appointment_list.html', appointments_list=[], form=search_form)
+
+
+
+
 @app.route('/appointment_form', methods=['GET', 'POST'])
 @login_required
 def appointment_form():
