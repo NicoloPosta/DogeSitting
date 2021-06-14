@@ -1,5 +1,5 @@
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask import Flask, json, render_template, redirect, url_for, jsonify, request
+from flask import Flask, json, render_template, redirect, url_for, jsonify, request, abort
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 import requests
 from database import *
@@ -88,6 +88,81 @@ def api_appointment_list():
     
     if return_list == []:
         return {'no_results': "Non ho trovato appuntamenti che soddisfano la fascia oraria richiesta o i cani richiesti"}, 400
+
+
+    return {'return_list': return_list}, 200
+
+
+@app.route('/api/book_appointment', methods=['POST'])
+@login_required
+def book_appointment_api():
+    
+    if(current_user.user_type == True):
+            return redirect(url_for('dogsitter_dashboard'))
+    else:
+        
+        booking_request = request.json
+
+        valid_booking_check = requests.post('http://localhost:5000/api/appointment_list',
+            json={
+                'appointment_id': booking_request['appointment_id'],
+                'user_id': booking_request['user_id'],
+                'time_start': booking_request['time_start'],
+                'time_end': booking_request['time_end'],
+                'date': booking_request['date'],
+                'dog_number': booking_request['dog_number'],
+                'location': booking_request['location']
+            })
+
+        if valid_booking_check.ok:
+
+            time1 = booking_request['time_start'][0:5]
+            time2 = booking_request['time_end'][0:5]
+            time_start = datetime.strptime(time1, "%H:%M").time()
+            time_end = datetime.strptime(time2, "%H:%M").time()
+            date =datetime.strptime(booking_request['date'], "%Y-%m-%d").date()
+
+            new_dogsitting_appointment = DogsittingAppointment(appointment_id=booking_request['appointment_id'], userId=booking_request['user_id'], appointment_start=time_start, appointment_end=time_end, dog_number=booking_request['dog_number'], appointment_date=date, location=booking_request['location'])
+            
+            db.session.add(new_dogsitting_appointment)
+
+            hours = Dog_per_Hours.query.filter_by(appointment_id=booking_request['appointment_id']).all()
+                
+            end_hour = int(time.fromisoformat(booking_request['time_end']).strftime("%H"))
+
+            start_hour = int(time.fromisoformat(booking_request['time_start']).strftime("%H"))    
+
+            if hours[0].start <= start_hour and hours[-1].end >= end_hour:
+                
+                hour_count = end_hour - start_hour
+                for hour in hours:
+                    if (hour.start >= start_hour) and (hour.end <= end_hour):
+                        hour.available_dog_number -= booking_request['dog_number']
+
+                        
+            db.session.commit()
+
+            return {'booking_status': "Prenotazione avvenuta con successo"}, 200
+
+        else:
+            return {'booking_statis': "Informazioni della prenotazione non valide, ricontrollare"}, 400
+
+
+@app.route('/api/user_booked_appointment', methods=['GET', 'POST'])
+@login_required
+def user_booked_appointment_api():
+
+    user_booked_appointment_data = request.json
+
+    return_list = DogsittingAppointment.query.filter_by(userId=user_booked_appointment_data['id']).all()
+
+    for i in range(0, len(return_list)):
+        return_list[i] = return_list[i].as_dict()
+
+
+    print("\n\n\n\n\n\n\n\n\n\n")
+    print(return_list)
+    print("\n\n\n\n\n\n\n\n\n\n")
 
 
     return {'return_list': return_list}, 200

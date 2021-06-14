@@ -26,9 +26,9 @@ Dashboard
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="#">Dashboard</a></li>
-            <li><a href="#">Settings</a></li>
-            <li><a href="#">Profile</a></li>
+            <li><a href="{{ url_for('dashboard') }}">Dashboard</a></li>
+            <li><a href="{{ url_for('appointment_list') }}">Prenotati</a></li>
+            <li><a href="{{ url_for('profile') }}">Profile</a></li>
             <li><a href="{{ url_for('logout') }}">Log Out</a></li>
           </ul>
           <form class="navbar-form navbar-right">
@@ -57,9 +57,13 @@ Dashboard
             <div class="row">
                 {% for appointment in appointments_list %}
                 <div class="col-md-4">
+                  <a href="/book_appointment/{{ appointment['id'] }}/{{ form.time_start.data }}/{{ form.time_end.data }}/{{ form.date.data }}/{{ form.dog_number.data }}/{{ appointment['location'] }}">
                     <div class="card">
                         <div class="card-body">
                             <p class="card-text">
+                                <br>
+                                <!--<p>/book_appointment/{{ appointment['id'] }}/{{ form.time_start.data }}/{{ form.time_end.data }}/{{ form.date.data }}/{{ form.dog_number.data }}/{{ appointment['location'] }}</p>-->
+                                <br>
                                 <strong>Luogo:</strong> {{ appointment['location'] }}
                                 <br>
                                 <strong>Ora Inizo:</strong> {{ appointment['appointment_start'] }}
@@ -70,6 +74,7 @@ Dashboard
                             </p>
                         </div>
                     </div>
+                  </a>
                 </div>
                 {% endfor %}
             </div>

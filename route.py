@@ -43,6 +43,31 @@ def add_appointment():
 '''
 
 
+@app.route('/user_booked_appointment/<requested_user_id>', methods=['GET','POST'])
+@login_required
+def user_booked_appointment(requested_user_id):
+    
+    requested_user_id = int(requested_user_id)
+
+    if(current_user.id == requested_user_id):
+
+        if(current_user.user_type == True):
+                return redirect(url_for('dogsitter_dashboard'))
+        else:
+
+            user_return = requests.post('http://localhost:5000/api/user_booked_appointment',
+            json={
+                'id': current_user.id
+            },
+            cookies=request.cookies)
+            if user_return.ok:
+                user_return = user_return.json()
+                return render_template('user_booked_appointments.html', user_booked_appointments=user_return['return_list'])
+            else:
+                return redirect(url_for('dashboard'))
+    else:
+        return abort(404)
+
 
 @app.route('/appointment_list', methods=['GET','POST'])
 def appointment_list():
@@ -71,6 +96,32 @@ def appointment_list():
     return render_template('appointment_list.html', appointments_list=[], form=search_form)
 
 
+
+@app.route('/book_appointment/<int:appointment_id>/<time_start>/<time_end>/<date>/<int:dog_number>/<location>', methods=['GET','POST'])
+@login_required
+def book_appointment(appointment_id, time_start, time_end, date, dog_number, location):
+    
+    if(current_user.user_type == True):
+            return {'booking_status': "Non hai i privilegi per effettuare una prenotazione"}, 400
+    else:
+        user_id = current_user.id
+        booked_appointment_return = requests.post('http://localhost:5000/api/book_appointment',
+            json={
+                'appointment_id': appointment_id,
+                'user_id': user_id,
+                'time_start': time_start,
+                'time_end': time_end,
+                'date': date,
+                'dog_number': dog_number,
+                'location': location
+            },
+            cookies=request.cookies)
+
+
+        if booked_appointment_return.ok:
+            return redirect(url_for('appointment_list'))
+        else:
+            return redirect(url_for('dashboard'))
 
 
 @app.route('/appointment_form', methods=['GET', 'POST'])
@@ -217,7 +268,7 @@ def dogsitter_profile_render():
 @app.route('/dashboard')
 @login_required
 def dashboard():
-    return render_template('dashboard.html', name=current_user.username)
+    return render_template('dashboard.html', name=current_user.username, user_id = current_user.id)
 
 
 @app.route('/dogsitter_dashboard')

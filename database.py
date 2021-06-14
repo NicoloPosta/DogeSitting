@@ -66,8 +66,23 @@ class Dog_per_Hours(db.Model):
 
 class DogsittingAppointment(db.Model):
     __tablename__ = 'dogsittingappointment'
-    prenotation_number = db.Column(db.Integer, primary_key=True)
-    dogsitter_name = db.Column(db.String(200), nullable=False)
-    dog_number = db.Column(db.Integer, nullable=False)
-    date = db.Column(db.DateTime, default=datetime.utcnow)
+    id = db.Column(db.Integer, primary_key=True)
+    appointment_id = db.Column(db.Integer, db.ForeignKey('availabledogsitter.id'))
     userId = db.Column(db.Integer, db.ForeignKey('user.id'))
+    dog_number = db.Column(db.Integer, nullable=False)
+    appointment_date = db.Column(db.DateTime, default=datetime.utcnow)
+    location = db.Column(db.String(200), nullable=False)
+    appointment_start = db.Column(db.Time, nullable=False)
+    appointment_end = db.Column(db.Time, nullable=False)
+
+    def as_dict(self):
+        return {
+            'id': self.id,
+            'appointment_id': self.appointment_id,
+            'userId': self.userId,
+            'dog_number': self.dog_number,
+            'appointment_date': self.appointment_date.isoformat(),
+            'appointment_start': self.appointment_start.isoformat(),
+            'appointment_end': self.appointment_end.isoformat(),
+            'location': self.location
+        }

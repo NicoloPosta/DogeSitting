@@ -23,10 +23,10 @@ Dashboard
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="#">Dashboard</a></li>
+            <li><a href="{{ url_for('dashboard') }}">Dashboard</a></li>
             <li><a href="{{ url_for('appointment_list') }}">Prenotati</a></li>
-            <li><a href="#">Settings</a></li>
             <li><a href="{{ url_for('profile') }}">Profile</a></li>
+            <li><a href="/user_booked_appointment/{{ user_id }}">Lista Prenotazioni</a></li>
             <li><a href="{{ url_for('logout') }}">Log Out</a></li>
           </ul>
           <form class="navbar-form navbar-right">
