@@ -45,21 +45,22 @@ Dashboard
                 <div class="col-md-4">
                     <div class="card">
                         <div class="card-body">
+                          <a href="/delete_booked_prenotation/{{ appointment['id'] }}">
                             <p class="card-text">
-                                <br>
-                                <strong>Luogo:</strong> {{ appointment['location'] }}
-                                <br>
-                                <strong>Giorno:</strong> {{ appointment['appointment_date'] }}
-                                <br>
-                                <strong>Ora Inizo:</strong> {{ appointment['appointment_start'] }}
-                                <br>
-                                <strong>Ora Fine:</strong> {{ appointment['appointment_end'] }}
-                                <br>
-                                <strong>Numero Cani:</strong> {{ appointment['dog_number'] }}
+                            <br>
+                            <strong>Luogo:</strong> {{ appointment['location'] }}
+                            <br>
+                            <strong>Giorno:</strong> {{ appointment['appointment_date'] }}
+                            <br>
+                            <strong>Ora Inizo:</strong> {{ appointment['appointment_start'] }}
+                            <br>
+                            <strong>Ora Fine:</strong> {{ appointment['appointment_end'] }}
+                            <br>
+                            <strong>Numero Cani:</strong> {{ appointment['dog_number'] }}
+                              </a>
                             </p>
                         </div>
                     </div>
-                  </a>
                 </div>
                 {% endfor %}
             </div>

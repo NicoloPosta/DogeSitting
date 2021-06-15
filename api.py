@@ -148,6 +148,39 @@ def book_appointment_api():
             return {'booking_statis': "Informazioni della prenotazione non valide, ricontrollare"}, 400
 
 
+@app.route('/api/delete_booked_prenotation_by_id', methods=['DELETE'])
+@login_required
+def delete_booked_prenotation_by_id():
+    
+    prenotation_to_be_deleted = request.json
+
+    prenotation = DogsittingAppointment.query.filter_by(id=prenotation_to_be_deleted['prenotation_id']).first()
+
+    if not prenotation:
+        return {'error': 'Prenotazione non trovata'}, 404
+
+    if prenotation.userId != current_user.id:
+        return {'error': 'La prenotazione non è stata effettuata da questo utente'}, 401
+
+    hours = Dog_per_Hours.query.filter_by(appointment_id=prenotation.appointment_id).all()
+
+    end_hour = int(prenotation.appointment_end.strftime("%H"))
+
+    start_hour = int(prenotation.appointment_start.strftime("%H"))
+
+    if hours[0].start <= start_hour and hours[-1].end >= end_hour:
+        
+        hour_count = end_hour - start_hour
+        for hour in hours:
+            if (hour.start >= start_hour) and (hour.end <= end_hour):
+                hour.available_dog_number += prenotation.dog_number
+
+    db.session.delete(prenotation)
+    db.session.commit()
+
+    return {'errors': 'Nessun errore riscontrato'}, 200
+
+
 @app.route('/api/user_booked_appointment', methods=['GET', 'POST'])
 @login_required
 def user_booked_appointment_api():
@@ -158,12 +191,6 @@ def user_booked_appointment_api():
 
     for i in range(0, len(return_list)):
         return_list[i] = return_list[i].as_dict()
-
-
-    print("\n\n\n\n\n\n\n\n\n\n")
-    print(return_list)
-    print("\n\n\n\n\n\n\n\n\n\n")
-
 
     return {'return_list': return_list}, 200
 

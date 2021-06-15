@@ -42,6 +42,24 @@ def add_appointment():
         return redirect(url_for('dashboard'))
 '''
 
+@app.route('/delete_booked_prenotation/<requested_prenotation_id>', methods=['GET','POST'])
+@login_required
+def delete_booked_prenotation(requested_prenotation_id):
+
+    requested_prenotation_id = int(requested_prenotation_id)
+
+    request_return = requests.delete('http://localhost:5000/api/delete_booked_prenotation_by_id',
+        json={
+            'prenotation_id': requested_prenotation_id
+        },
+        cookies=request.cookies
+    )
+
+    if request_return.ok:
+        return redirect(url_for('user_booked_appointment', requested_user_id=current_user.id))
+    else:
+        return abort(404)
+
 
 @app.route('/user_booked_appointment/<requested_user_id>', methods=['GET','POST'])
 @login_required
