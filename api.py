@@ -148,6 +148,62 @@ def book_appointment_api():
             return {'booking_statis': "Informazioni della prenotazione non valide, ricontrollare"}, 400
 
 
+@app.route('/api/delete_dogsitter_appointment_api', methods=['DELETE'])
+@login_required
+def delete_dogsitter_appointment_api():
+
+    dogsitter_appointment_id = request.json
+
+    appointment = AvailableDogsitter.query.filter_by(id=dogsitter_appointment_id['appointment_id']).first()
+
+    if not appointment:
+        return {'error': 'Appuntamento non trovato'}, 404
+
+    if appointment.dogsitter_id != current_user.id or current_user.user_type != True:
+        return {'error': 'Richiesta fatta da utente non possessore della prenotazione'}, 400
+    else:
+
+        prenotations = DogsittingAppointment.query.filter_by(appointment_id=dogsitter_appointment_id['appointment_id']).all()
+
+        for prenotation in prenotations:
+            db.session.delete(prenotation)
+
+        hours = Dog_per_Hours.query.filter_by(appointment_id=dogsitter_appointment_id['appointment_id']).all()
+
+        for hour in hours:
+            db.session.delete(hour)
+
+        db.session.delete(appointment)
+        db.session.commit()
+
+        return {'errors': 'Nessun errore riscontrato'}, 200
+
+
+
+@app.route('/api/dogsitter_appointment_list_api', methods=['POST'])
+@login_required
+def dogsitter_appointment_list_api():
+
+    dogsitter_appointment_user_id = request.json
+
+    if current_user.id == dogsitter_appointment_user_id['user_id']:
+
+        if current_user.user_type == True:
+
+            availability_list = AvailableDogsitter.query.filter_by(dogsitter_id=current_user.id).all()
+
+            availability_list_serializable = []
+
+            for elem in availability_list:
+                availability_list_serializable.append(elem.as_dict())
+
+            return {'return_list': availability_list_serializable}, 200
+        else:
+            return {'error': 'Richiesta da parte di un utente non dogsitter'}, 400
+    else:
+        return {'error': 'Richiesta da parte di un utente diverso da quello loggato'}, 400
+
+
 @app.route('/api/delete_booked_prenotation_by_id', methods=['DELETE'])
 @login_required
 def delete_booked_prenotation_by_id():

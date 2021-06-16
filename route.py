@@ -11,6 +11,43 @@ def load_user(user_id):
     return User.query.get(int(user_id))
 
 
+@app.route('/dogsitter_appointment_list/<user_id>', methods=['POST', 'GET'])
+@login_required
+def dogsitter_appointment_list(user_id):
+
+    user_id = int(user_id)
+
+    return_request = requests.post('http://localhost:5000/api/dogsitter_appointment_list_api',
+        json={
+            'user_id': user_id
+        },
+        cookies=request.cookies
+    )
+
+    if return_request.ok:
+        return_request = return_request.json()
+        return render_template('dogsitter_appointment_list.html', dogsitter_available_appointment=return_request['return_list'])
+    else:
+        return_request = return_request.json()
+        return {'error': return_request['error']}, 404
+
+
+@app.route('/delete_dogsitter_appointment/<appointment_id>', methods=['GET','POST'])
+@login_required
+def delet_dogsitter_appointment(appointment_id):
+    
+    appointment_id = int(appointment_id)
+    return_request = requests.delete('http://localhost:5000/api/delete_dogsitter_appointment_api',
+        json={
+            'appointment_id': appointment_id
+        },
+        cookies=request.cookies
+        )
+    if return_request.ok:
+        return redirect(url_for('dogsitter_appointment_list', user_id=current_user.id))
+    else:
+        return{'errore':'non è stato possibile eliminare la voce selezionata'}
+
 
 @app.route('/dogsitter_profile_reroute', methods=['GET', 'POST'])
 @login_required
@@ -31,16 +68,7 @@ def user_profile():
     else:
         return redirect(url_for('user_profile'))
 
-'''
-@app.route('/add_appointment')
-@login_required
-def add_appointment():
 
-    if(current_user.user_type == True):
-            return redirect(url_for('appointment_form'))
-    else:
-        return redirect(url_for('dashboard'))
-'''
 
 @app.route('/delete_booked_prenotation/<requested_prenotation_id>', methods=['GET','POST'])
 @login_required
@@ -151,11 +179,7 @@ def appointment_form():
     if(current_user.user_type == True):
 
         if appointment_form.validate_on_submit():
-            '''
-            new_appointment = AvailableDogsitter(dogsitter_id=current_user.id , max_dog_number=form.dog_number.data, location=form.location.data, appointment_day=form.date.data, appointment_start=form.time_start.data, appointment_end=form.time_end.data)
-            db.session.add(new_appointment)
-            db.session.commit()
-            '''
+
             appointment_return = requests.post('http://localhost:5000/api/add_appointment',
                 json={
                     'dogsitter_id': current_user.id,
