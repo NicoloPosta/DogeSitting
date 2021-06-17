@@ -9,6 +9,8 @@ def index():
     login_form = LoginForm()
     signup_form = RegisterForm()
 
+    search_form = SearchForm()
+
     if login_form.login.data:
         if login_form.validate():
             login_return = requests.post('http://localhost:5000/api/login',
@@ -57,7 +59,10 @@ def index():
                 if 'username' in signup_return:
                     signup_form.username.errors = [signup_return['username']]
 
-    return render_template('index.html', form_login=login_form, form_register=signup_form)
+    if search_form.search.data and search_form.validate():
+        return appointment_list(search_form)
+
+    return render_template('index.html', form_login=login_form, form_register=signup_form, search_form=search_form)
 
 
 @login_manager.user_loader
@@ -148,12 +153,15 @@ def user_booked_appointment(requested_user_id):
     else:
         return abort(404)
 
+
 #Verrà messa nella ricerca dall'utente
 @app.route('/appointment_list', methods=['GET','POST'])
-def appointment_list():
-    search_form = SearchForm()
+def appointment_list(search_form=None):
 
-    if search_form.validate_on_submit():
+    if not search_form:
+        search_form = SearchForm()
+
+    if search_form.search.data and search_form.validate():
 
         search_return = requests.post('http://localhost:5000/api/appointment_list',
             json={
@@ -167,13 +175,14 @@ def appointment_list():
 
         if search_return.ok:
             search_return = search_return.json()
-            return render_template('appointment_list.html', appointments_list=search_return['return_list'], form=search_form)
+            return render_template('appointment_list.html', appointments_list=search_return['return_list'], search_form=search_form)
         else:
             search_return = search_return.json()
             if 'no_results' in search_return:
                 search_form.location.errors = [search_return['no_results']]
 
-    return render_template('appointment_list.html', appointments_list=[], form=search_form)
+    return render_template('appointment_list.html', appointments_list=[], search_form=search_form)
+
 
 
 #Penso debba restare invariata

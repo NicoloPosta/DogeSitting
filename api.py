@@ -328,10 +328,6 @@ def update_user_profile_api():
     if current_user.id == user_data['user_id']:
 
         update_user_data = User.query.filter_by(id=user_data['user_id']).first()
-
-        print("\n\n\n\n\n")
-        print("Query fatta")
-        print("\n\n\n\n\n")
         update_user_data.name = user_data['name']
         update_user_data.surname = user_data['surname']
         update_user_data.sex = user_data['sex']
@@ -340,9 +336,6 @@ def update_user_profile_api():
         update_user_data.description = user_data['description']
 
         db.session.commit()
-        print("\n\n\n\n\n")
-        print("Commit fatto")
-        print("\n\n\n\n\n")
         return {'message': 'Dati inviati con successo'}, 200
 
     else:

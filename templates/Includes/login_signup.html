@@ -6,8 +6,9 @@
                 <!-- Tabs navs -->
                 <ul class="nav nav-tabs  nav-fill" id="signin-up-navs" role="tablist">
                     <li class="nav-item active" role="presentation">
-                        <button class="nav-link active" id="home-tab0" data-mdb-toggle="tab" data-mdb-target="#signinTab"
-                            type="button" role="tab" aria-controls="home" aria-selected="true">
+                        <button class="nav-link active" id="home-tab0" data-mdb-toggle="tab"
+                            data-mdb-target="#signinTab" type="button" role="tab" aria-controls="home"
+                            aria-selected="true">
                             Sign in
                         </button>
                     </li>
@@ -29,7 +30,7 @@
                         <div class="card text-center">
                             <div class="card-body">
                                 <form class="form-signin" method="POST" action="/">
-                                    <h2 class="form-signin-heading">Please sign in</h2>
+                                    <h2 class="form-signin-heading">Effettua il Login</h2>
                                     {{ form_login.hidden_tag() }}
                                     <div class="form-group">
                                         {{ form_login.username.label(class="form-control-label") }}
@@ -58,7 +59,7 @@
                                         {% endif %}
                                     </div>
 
-                                    {{ form_login.login(class="btn btn-primary btn-link btn-wd btn-lg")  }}
+                                    {{ form_login.login(class="btn btn-warning") }}
                                 </form>
                             </div>
                         </div>
@@ -67,12 +68,13 @@
                         <div class="card text-center">
                             <div class="card-body">
                                 <form class="form-signin" method="POST" action="/">
-                                    <h2 class="form-signin-heading">Sign Up</h2>
+                                    <h2 class="form-signin-heading">Effettua il Signup</h2>
                                     {{ form_register.hidden_tag() }}
+
                                     <div class="form-group">
                                         {{ form_register.username.label(class="form-control-label") }}
                                         {% if form_register.username.errors %}
-                                        {{ form_register.username(class="form-control form-control-lg is-invalid") }}
+                                        {{ form_register.username(class="form-control form-control-lg is-invalid")}}
                                         <div class="invalid-feedback">
                                             {% for error in form_register.username.errors %}
                                             <span>{{ error }}</span>
@@ -82,6 +84,7 @@
                                         {{ form_register.username(class="form-control form.control.lg") }}
                                         {% endif %}
                                     </div>
+
                                     <div class="form-group">
                                         {{ form_register.email.label(class="form-control-label") }}
                                         {% if form_register.email.errors %}
@@ -95,10 +98,12 @@
                                         {{ form_register.email(class="form-control form.control.lg") }}
                                         {% endif %}
                                     </div>
+
                                     <div class="form-group">
                                         {{ form_register.password.label(class="form-control-label") }}
                                         {% if form_register.password.errors %}
-                                        {{ form_register.password(class="form-control form-control-lg is-invalid") }}
+                                        {{ form_register.password(class="form-control form-control-lg is-invalid")
+                                        }}
                                         <div class="invalid-feedback">
                                             {% for error in form_register.password.errors %}
                                             <span>{{ error }}</span>
@@ -108,11 +113,14 @@
                                         {{ form_register.password(class="form-control form.control.lg") }}
                                         {% endif %}
                                     </div>
+
                                     <div class="form-check">
                                         {{ form_register.usertype.label(class="form-control-label") }}
                                         {{ form_register.usertype }}
                                     </div>
-                                    {{ form_register.register(class="btn btn-primary btn-link btn-wd btn-lg")  }}
+
+                                    {{ form_register.register(class="btn btn-warning") }}
+
                                 </form>
                             </div>
                         </div>

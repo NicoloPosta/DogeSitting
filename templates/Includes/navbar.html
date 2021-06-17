@@ -23,7 +23,7 @@
         <!-- Left links -->
         <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#">Home</a>
+            <a class="nav-link active" aria-current="page" href="/">Home</a>
           </li>
           <!-- Pagine navbar per dogsitter-->
           {% if current_user.is_authenticated and current_user.user_type == True %}
@@ -47,7 +47,7 @@
 
         {% if not current_user.is_authenticated %}
         <!-- Button login_signup -->
-        <button type="button" class="btn btn-primary" data-mdb-toggle="modal" data-mdb-target="#modal-signin">
+        <button type="button" class="btn btn-warning" data-mdb-toggle="modal" data-mdb-target="#modal-signin">
           Sign in/up
         </button>
         {% endif %}

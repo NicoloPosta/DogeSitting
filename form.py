@@ -11,6 +11,7 @@ class SearchForm(FlaskForm):
     dog_number = IntegerField('Numero Cani', validators=[InputRequired(), validators.NumberRange(min=1, max=99, message="Numero di cani non valido...")])
     time_start = TimeField('Orario inizio', format='%H:%M', validators=[InputRequired()])
     time_end = TimeField('Orario fine', format='%H:%M', validators=[InputRequired()])
+    search = SubmitField('Cerca')
 
 class UserForm(FlaskForm):
     name = StringField('Nome', validators=[Length(min=1, max=15)])
@@ -23,16 +24,16 @@ class UserForm(FlaskForm):
 
 
 class LoginForm(FlaskForm):
-    username = StringField('username', validators=[InputRequired(), Length(min=4, max=15)])
-    password = PasswordField('password', validators=[InputRequired(), Length(min=8, max=80)])
-    remember = BooleanField('remember me')
+    username = StringField('Username', validators=[InputRequired(), Length(min=4, max=15)])
+    password = PasswordField('Password', validators=[InputRequired(), Length(min=8, max=80)])
+    remember = BooleanField('Remember me')
     login = SubmitField('Login')
 
 class RegisterForm(FlaskForm):
-    email = StringField('email', validators=[InputRequired(), Email(message='Email non valida'), Length(max=50)])
-    username = StringField('username', validators=[InputRequired(), Length(min=4, max=15)])
-    password = PasswordField('password', validators=[InputRequired(), Length(min=8, max=80)])
-    usertype = BooleanField('tipo di utenza')
+    email = StringField('Email', validators=[InputRequired(), Email(message='Email non valida'), Length(max=50)])
+    username = StringField('Username', validators=[InputRequired(), Length(min=4, max=15)])
+    password = PasswordField('Password', validators=[InputRequired(), Length(min=8, max=80)])
+    usertype = BooleanField('Dogsitter')
     register = SubmitField('Signup')
 
 class AppointmentForm(FlaskForm):
@@ -41,6 +42,7 @@ class AppointmentForm(FlaskForm):
     date = DateField('Data appuntamento', validators=[InputRequired()])
     time_start = TimeField('Orario inizio', format='%H:%M', validators=[InputRequired()])
     time_end = TimeField('Orario fine', format='%H:%M', validators=[InputRequired()])
+
 
     
     def validate(self):
