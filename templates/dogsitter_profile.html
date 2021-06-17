@@ -1,13 +1,4 @@
-{% extends "bootstrap/base.html" %}
-
-{% block title %}
-Dashboard
-{% endblock %}
-
-{% block styles %}
-{{super()}}
-<link rel="stylesheet" href="{{url_for('.static', filename='dashboard.css')}}">
-{% endblock %}
+{% extends "layout.html" %}
 
 {% block content %}
     <nav class="navbar navbar-inverse navbar-fixed-top">
