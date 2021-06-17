@@ -12,7 +12,7 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <!-- Navbar brand -->
       <a class="navbar-brand mt-2 mt-lg-0" href="#">
-        <img src="{{ url_for('static', filename='img/doge.png') }}" height="45" alt="" loading="lazy" />
+        <!-- <img src="{{ url_for('static', filename='img/doge.png') }}" height="45" alt="" loading="lazy" />-->
       </a>
 
       <!-- Collapsible wrapper -->
@@ -25,13 +25,12 @@
           {% if current_user.is_authenticated and current_user.user_type == True %}
           <li class="nav-item"><a class="nav-link" href="{{ url_for('dogsitter_dashboard') }}">Dashboard</a></li>
           <li class="nav-item"><a class="nav-link" href="{{ url_for('appointment_form') }}">Disponibilità</a></li>
-          <li class="nav-item"><a class="nav-link" href="{{ url_for('dogsitter_profile') }}">Profilo</a></li>
           {% else %}
           <li class="nav-item"><a class="nav-link" href="{{ url_for('dashboard') }}">Dashboard</a></li>
           <li class="nav-item"><a class="nav-link" href="{{ url_for('appointment_list') }}">Prenotati</a></li>
           <li class="nav-item"><a class="nav-link" href="/user_booked_appointment/{{ user_id }}">Lista Prenotazioni</a></li>
-          <li class="nav-item"><a class="nav-link" href="{{ url_for('user_profile') }}">Profilo</a></li>
           {% endif %}
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('profile/{{ current_user.id }}') }}">Profilo</a></li>
           <!-- Navbar dropdown -->
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-mdb-toggle="dropdown"
@@ -61,6 +60,15 @@
         <!-- Left links -->
       </div>
       <div class="d-flex align-items-center">
+
+
+        <!-- Button login_signup -->
+        <button type="button" class="btn btn-primary" data-mdb-toggle="modal" data-mdb-target="#exampleModal" href="{{ url_for('login_signup') }}">
+          Sign in/up
+        </button>
+
+
+
         <!-- Avatar -->
         <a class="dropdown-toggle d-flex align-items-center hidden-arrow" href="#" id="navbarDropdownMenuLink"
           role="button" data-mdb-toggle="dropdown" aria-expanded="false">

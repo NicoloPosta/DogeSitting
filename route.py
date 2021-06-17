@@ -10,7 +10,7 @@ def index():
 def load_user(user_id):
     return User.query.get(int(user_id))
 
-
+#va integrata nel calendario
 @app.route('/dogsitter_appointment_list/<user_id>', methods=['POST', 'GET'])
 @login_required
 def dogsitter_appointment_list(user_id):
@@ -31,7 +31,7 @@ def dogsitter_appointment_list(user_id):
         return_request = return_request.json()
         return {'error': return_request['error']}, 404
 
-
+# verrà integrata nel calendario del dogsitter
 @app.route('/delete_dogsitter_appointment/<appointment_id>', methods=['GET','POST'])
 @login_required
 def delet_dogsitter_appointment(appointment_id):
@@ -49,27 +49,7 @@ def delet_dogsitter_appointment(appointment_id):
         return{'errore':'non è stato possibile eliminare la voce selezionata'}
 
 
-@app.route('/dogsitter_profile_reroute', methods=['GET', 'POST'])
-@login_required
-def dogsitter_profile():
-
-    if(current_user.user_type == True):
-            return redirect(url_for('dogsitter_profile_render'))
-    else:
-        return redirect(url_for('dashboard'))
-
-
-@app.route('/user_profile', methods=['GET', 'POST'])
-@login_required
-def user_profile():
-
-    if(current_user.user_type == True):
-            return redirect(url_for('dogsitter_dashboard'))
-    else:
-        return redirect(url_for('user_profile'))
-
-
-
+# da integrare nel calendario
 @app.route('/delete_booked_prenotation/<requested_prenotation_id>', methods=['GET','POST'])
 @login_required
 def delete_booked_prenotation(requested_prenotation_id):
@@ -88,7 +68,7 @@ def delete_booked_prenotation(requested_prenotation_id):
     else:
         return abort(404)
 
-
+# va integrata nel calendario utente
 @app.route('/user_booked_appointment/<requested_user_id>', methods=['GET','POST'])
 @login_required
 def user_booked_appointment(requested_user_id):
@@ -114,7 +94,7 @@ def user_booked_appointment(requested_user_id):
     else:
         return abort(404)
 
-
+#Verrà messa nella ricerca dall'utente
 @app.route('/appointment_list', methods=['GET','POST'])
 def appointment_list():
     search_form = SearchForm()
@@ -142,7 +122,7 @@ def appointment_list():
     return render_template('appointment_list.html', appointments_list=[], form=search_form)
 
 
-
+#Penso debba restare invariata
 @app.route('/book_appointment/<int:appointment_id>/<time_start>/<time_end>/<date>/<int:dog_number>/<location>', methods=['GET','POST'])
 @login_required
 def book_appointment(appointment_id, time_start, time_end, date, dog_number, location):
@@ -169,7 +149,7 @@ def book_appointment(appointment_id, time_start, time_end, date, dog_number, loc
         else:
             return redirect(url_for('dashboard'))
 
-
+#Verrà messa nel calendario
 @app.route('/appointment_form', methods=['GET', 'POST'])
 @login_required
 def appointment_form():
@@ -208,7 +188,7 @@ def appointment_form():
 
         return redirect(url_for('dashboard'))
 
-
+# verrà rimossa e messa su una unica
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     login_form = LoginForm()
@@ -235,19 +215,40 @@ def login():
             if 'password' in login_return:
                 login_form.password.errors = [login_return['password']]
 
-    return render_template('login.html', form=login_form)
+    return render_template('Includes/login.html', form=login_form)
 
 
-@app.route('/profile', methods=['GET', 'POST'])
+@app.route('/profile/<user_id>', methods=['GET'])
 @login_required
-def profile():
+def profile(user_id):
+
+    user_id = int(user_id)
+
     profile_form = UserForm()
 
+    profile_info = requests.get('http://localhost:5000/api/profile',
+        json={
+            'user_id': user_id
+        },
+        cookies=request.cookies
+    )
+
+    if profile_info.ok:
+
+    profile_info = profile_info.json
+
     if profile_form.submit.data:
-        return redirect(url_for('update_user_profile'))
-    return render_template('user_profile.html', id=current_user.id, form=profile_form, nome=current_user.name, sesso=current_user.sex ,cognome=current_user.surname, numero_telefono=current_user.tel_number, data_nascita=current_user.birth_date, descrizione=current_user.description)
+
+        
 
 
+        return render_template('user_profile.html', id=current_user.id, form=profile_form, nome=profile_info['name'], sesso=profile_info['sex'] ,cognome=profile_info['surname'], numero_telefono=profile_info['tel_number'], data_nascita=profile_info['date'], descrizione=profile_info['description'], non_modificabile=False)
+
+
+
+    return render_template('user_profile.html', id=current_user.id, form=profile_form, nome=profile_info['name'], sesso=profile_info['sex'] ,cognome=profile_info['surname'], numero_telefono=profile_info['tel_number'], data_nascita=profile_info['date'], descrizione=profile_info['description'], non_modificabile=True)
+
+#da rendere REST
 @app.route('/update_user_profile', methods=['GET','POST'])
 @login_required
 def update_user_profile():
@@ -266,7 +267,7 @@ def update_user_profile():
 
     return render_template('update_user_profile.html', id=current_user.id, form=update_profile_form, nome=current_user.name, sesso=current_user.sex ,cognome=current_user.surname, numero_telefono=current_user.tel_number, data_nascita=current_user.birth_date, descrizione=current_user.description)
 
-
+# verrà rimossa e messa su una unica
 @app.route('/signup', methods=['GET','POST'])
 def signup():
     signup_form = RegisterForm()
@@ -296,15 +297,7 @@ def signup():
             if 'username' in signup_return:
                 signup_form.username.errors = [signup_return['username']]
 
-    return render_template('signup.html', form=signup_form)
-
-
-
-
-@app.route('/dogsitter_profile')
-@login_required
-def dogsitter_profile_render():
-        return render_template('dogsitter_profile.html', id=current_user.id)
+    return render_template('Includes/signup.html', form=signup_form)
 
 
 @app.route('/dashboard')
@@ -324,3 +317,9 @@ def dogsitter_dashboard():
 def logout():
     logout_user()
     return redirect(url_for('index'))
+
+
+
+@app.route('/login_signup')
+def login_signup():
+    return render_template('Includes/login_signup.html')

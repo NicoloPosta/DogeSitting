@@ -300,3 +300,32 @@ def add_appointment_api():
 
 
     return json.dumps({'appointment_id': new_appointment.id}), 200
+
+
+@app.route('/api/user_profile', methods=['GET'])
+@login_required
+def user_profile_api():
+    requested_user = request.json
+    user_data = User.query.filter_by(id=requested_user['user_id'])
+
+    user_data_serializable = []
+    user_data_serializable = user_data.as_dict()
+
+    return
+
+
+@app.route('/api/update_user_profile', methods=['PUT'])
+@login_required
+def update_user_profile_api():
+    
+    user_data = request.json
+    update_user_data = User.query.filter_by(id=user_data['user_id']).first()
+    update_user_data.name = user_data['name']
+    update_user_data.surname = user_data['surname']
+    update_user_data.sex = user_data['sex']
+    update_user_data.birth_date = user_data['birth_date']
+    update_user_data.tel_number = user_data['tel_number']
+    update_user_data.description = user_data['description']
+
+    db.session.commit()
+

@@ -1,40 +1,36 @@
 {% extends "layout.html" %}
 
 {% block content %}
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-      <div class="container-fluid">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="#">Project name</a>
-        </div>
-        <div id="navbar" class="navbar-collapse collapse">
-          <ul class="nav navbar-nav navbar-right">
-            <li><a href="{{ url_for('dashboard') }}">Dashboard</a></li>
-            <li><a href="{{ url_for('appointment_list') }}">Prenotati</a></li>
-            <li><a href="{{ url_for('profile') }}">Profile</a></li>
-            <li><a href="{{ url_for('logout') }}">Log Out</a></li>
-          </ul>
-          <form class="navbar-form navbar-right">
-            <input type="text" class="form-control" placeholder="Search...">
-          </form>
-        </div>
-      </div>
-    </nav>
     <div>
       <form method="POST" action="/update_user_profile">
         {{ form.hidden_tag() }}
-        {{ wtf.form_field(form.name, value=nome) }}
-        {{ wtf.form_field(form.surname, value=cognome) }}
-        {{ wtf.form_field(form.sex, value=sesso) }}
-        {{ wtf.form_field(form.tel_number, value=numero_telefono) }}
-        {{ wtf.form_field(form.birth_date, value=data_nascita) }}
-        {{ wtf.form_field(form.description, value=descrizione) }}
-        {{ wtf.form_field(form.submit, value="Conferma") }}
+        <div class="form-group">
+          {{ form.name.label(class="form-control-label") }}
+          {{ form.name(class="form-control form.control.lg",  value=nome) }}
+        </div>
+        <div class="form-group">
+          {{ form.surname.label(class="form-control-label") }}
+          {{ form.surname(class="form-control form.control.lg", value=cognome) }}
+        </div>
+        <div class="form-group">
+          {{ form.sex.label(class="form-control-label") }}
+          {{ form.sex(class="form-control form.control.lg", value=sesso) }}
+        </div>
+        <div class="form-group">
+          {{ form.tel_number.label(class="form-control-label") }}
+          {{ form.tel_number(class="form-control form.control.lg", value=numero_telefono) }}
+        </div>
+        <div class="form-group">
+          {{ form.birth_date.label(class="form-control-label") }}
+          {{ form.birth_date(class="form-control form.control.lg", value=data_nascita) }}
+        </div>
+        <div class="form-group">
+          {{ form.description.label(class="form-control-label") }}
+          {{ form.description(class="form-control form.control.lg", value=descrizione) }}
+        </div>
+        <div class="form-group">
+          {{ form.submit(class="form-control form.control.lg", value="Modifica") }}
+        </div>
       </form>
     </div>
    
