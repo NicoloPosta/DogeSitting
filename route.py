@@ -1,9 +1,63 @@
+from flask_wtf import form
 from api import *
 
+first_click = True
 
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 def index():
-    return render_template('index.html')
+
+    login_form = LoginForm()
+    signup_form = RegisterForm()
+
+    if login_form.login.data:
+        if login_form.validate():
+            login_return = requests.post('http://localhost:5000/api/login',
+                json={
+                    'username': login_form.username.data,
+                    'password': login_form.password.data
+                }
+            )
+
+            if login_return.ok:
+                user = User.query.filter_by(id=login_return.json()['user_id']).first()
+                login_user(user, remember=True)
+                if user.user_type:
+                    return redirect(url_for('dogsitter_dashboard'))
+                else:
+                    return redirect(url_for('dashboard'))
+            else:
+                login_return = login_return.json()
+                if 'username_login' in login_return:
+                    login_form.username.errors = [login_return['username_login']]
+                if 'password' in login_return:
+                    login_form.password.errors = [login_return['password']]
+
+    if signup_form.register.data:
+        if signup_form.validate():
+            signup_return = requests.post('http://localhost:5000/api/signup',
+                json={
+                    'username': signup_form.username.data,
+                    'email': signup_form.email.data,
+                    'password': signup_form.password.data,
+                    'user_type': signup_form.usertype.data
+                }
+            ) 
+
+            if signup_return.ok:
+                user = User.query.filter_by(id=signup_return.json()['user_id']).first()
+                login_user(user, remember=True)
+                if user.user_type:
+                    return redirect(url_for('dogsitter_dashboard'))
+                else:
+                    return redirect(url_for('dashboard'))
+            else:
+                signup_return = signup_return.json()
+                if 'email' in signup_return:
+                    signup_form.email.errors = [signup_return['email']]
+                if 'username' in signup_return:
+                    signup_form.username.errors = [signup_return['username']]
+
+    return render_template('index.html', form_login=login_form, form_register=signup_form)
 
 
 @login_manager.user_loader
@@ -218,15 +272,17 @@ def login():
     return render_template('Includes/login.html', form=login_form)
 
 
-@app.route('/profile/<user_id>', methods=['GET'])
+@app.route('/profile/<user_id>', methods=['POST','GET'])
 @login_required
 def profile(user_id):
+
+    global first_click
 
     user_id = int(user_id)
 
     profile_form = UserForm()
 
-    profile_info = requests.get('http://localhost:5000/api/profile',
+    profile_info = requests.get('http://localhost:5000/api/user_profile',
         json={
             'user_id': user_id
         },
@@ -235,37 +291,43 @@ def profile(user_id):
 
     if profile_info.ok:
 
-    profile_info = profile_info.json
-
-    if profile_form.submit.data:
-
+        profile_info = profile_info.json()
         
+        if profile_form.submit.data:
 
+            if first_click:
+                first_click = False
+                return render_template('user_profile.html', id=current_user.id, form=profile_form, nome=profile_info['user_data']['name'], sesso=profile_info['user_data']['sex'], cognome=profile_info['user_data']['surname'], numero_telefono=profile_info['user_data']['tel_number'], data_nascita=profile_info['user_data']['birth_date'], descrizione=profile_info['user_data']['description'], non_modificabile=False, valore_bottone="Conferma")
 
-        return render_template('user_profile.html', id=current_user.id, form=profile_form, nome=profile_info['name'], sesso=profile_info['sex'] ,cognome=profile_info['surname'], numero_telefono=profile_info['tel_number'], data_nascita=profile_info['date'], descrizione=profile_info['description'], non_modificabile=False)
+            else:
 
+                profile_info = requests.put('http://localhost:5000/api/update_user_profile',
+                    json={
+                        'user_id': user_id,
+                        'name': profile_form.name.data,
+                        'surname': profile_form.surname.data,
+                        'sex': profile_form.sex.data,
+                        'birth_date': profile_form.birth_date.data.isoformat(),
+                        'tel_number': profile_form.tel_number.data,
+                        'description': profile_form.description.data
+                    },
+                    cookies=request.cookies
+                )
 
+                if profile_info.ok:
+                    first_click = True
+                    return redirect(url_for('profile', user_id=current_user.id))
 
-    return render_template('user_profile.html', id=current_user.id, form=profile_form, nome=profile_info['name'], sesso=profile_info['sex'] ,cognome=profile_info['surname'], numero_telefono=profile_info['tel_number'], data_nascita=profile_info['date'], descrizione=profile_info['description'], non_modificabile=True)
+                else:
+                    profile_info = profile_info.json()
+                    return {'error': profile_info['error']}, 400
 
-#da rendere REST
-@app.route('/update_user_profile', methods=['GET','POST'])
-@login_required
-def update_user_profile():
-    update_profile_form = UserForm()
+        return render_template('user_profile.html', id=current_user.id, form=profile_form, nome=profile_info['user_data']['name'], sesso=profile_info['user_data']['sex'], cognome=profile_info['user_data']['surname'], numero_telefono=profile_info['user_data']['tel_number'], data_nascita=profile_info['user_data']['birth_date'], descrizione=profile_info['user_data']['description'], non_modificabile=True, valore_bottone="Modifica")
+        #return render_template('user_profile.html', id=current_user.id, form=profile_form, nome=profile_return['name'], sesso=profile_return['sex'], cognome=profile_return['surname'], numero_telefono=profile_return['tel_number'], data_nascita=profile_return['birth_date'], descrizione=profile_return['description'], non_modificabile=True)
+    else:
+        profile_info = profile_info.json()
+        return {'error': profile_info['error']}, 400
 
-    if update_profile_form.submit.data and update_profile_form.validate():
-        user = User.query.filter_by(id=current_user.id).first()
-        user.name = update_profile_form.name.data
-        user.surname = update_profile_form.surname.data
-        user.sex = update_profile_form.sex.data
-        user.birth_date = update_profile_form.birth_date.data
-        user.tel_number = update_profile_form.tel_number.data
-        user.description = update_profile_form.description.data
-        db.session.commit()
-        return redirect(url_for('profile'))
-
-    return render_template('update_user_profile.html', id=current_user.id, form=update_profile_form, nome=current_user.name, sesso=current_user.sex ,cognome=current_user.surname, numero_telefono=current_user.tel_number, data_nascita=current_user.birth_date, descrizione=current_user.description)
 
 # verrà rimossa e messa su una unica
 @app.route('/signup', methods=['GET','POST'])
@@ -317,9 +379,3 @@ def dogsitter_dashboard():
 def logout():
     logout_user()
     return redirect(url_for('index'))
-
-
-
-@app.route('/login_signup')
-def login_signup():
-    return render_template('Includes/login_signup.html')

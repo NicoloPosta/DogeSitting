@@ -11,12 +11,12 @@ class User(UserMixin, db.Model):
     username = db.Column(db.String(50), nullable=False, unique=True)
     password = db.Column(db.String(80), nullable=False)
     user_type = db.Column(db.Boolean, nullable=False)#0 per utenti base, 1 per dogsitter
-    sex = db.Column(db.String(), default=None)
-    tel_number = db.Column(db.Integer, default=None)
-    name = db.Column(db.String(20), default=None)
-    surname = db.Column(db.String(20), default=None)
-    birth_date = db.Column(db.Date, default=None)
-    description = db.Column(db.String(200), default=None)
+    sex = db.Column(db.String(), default="Non inserito")
+    tel_number = db.Column(db.Integer, default=000)
+    name = db.Column(db.String(20), default="Non inserito")
+    surname = db.Column(db.String(20), default="Non Inserito")
+    birth_date = db.Column(db.Date, default=datetime.utcnow)
+    description = db.Column(db.String(200), default="Non inserito")
 
     def __repr__(self):
         return f"User('{self.id}', '{self.username}', '{self.password}', '{self.email}', '{self.user_type}')"
@@ -27,7 +27,13 @@ class User(UserMixin, db.Model):
             'email': self.email,
             'username': self.username,
             'password': self.password,
-            'user_type': self.user_type
+            'user_type': self.user_type,
+            'sex': self.sex,
+            'tel_number': self.tel_number,
+            'name': self.name,
+            'surname': self.surname,
+            'birth_date': self.birth_date.isoformat(),
+            'description': self.description
         }
 
 

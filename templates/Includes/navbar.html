@@ -1,3 +1,6 @@
+{% if not current_user.is_authenticated %}
+{% include 'Includes/login_signup.html' %}
+{% endif %}
 <!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <!-- Container wrapper -->
@@ -22,73 +25,47 @@
           <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="#">Home</a>
           </li>
+          <!-- Pagine navbar per dogsitter-->
           {% if current_user.is_authenticated and current_user.user_type == True %}
           <li class="nav-item"><a class="nav-link" href="{{ url_for('dogsitter_dashboard') }}">Dashboard</a></li>
           <li class="nav-item"><a class="nav-link" href="{{ url_for('appointment_form') }}">Disponibilità</a></li>
-          {% else %}
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('profile', user_id=current_user.id) }}">Profilo</a>
+          </li>
+          <!-- Pagine navbar per utente normale-->
+          {% elif current_user.is_authenticated %}
           <li class="nav-item"><a class="nav-link" href="{{ url_for('dashboard') }}">Dashboard</a></li>
           <li class="nav-item"><a class="nav-link" href="{{ url_for('appointment_list') }}">Prenotati</a></li>
-          <li class="nav-item"><a class="nav-link" href="/user_booked_appointment/{{ user_id }}">Lista Prenotazioni</a></li>
+          <li class="nav-item"><a class="nav-link" href="/user_booked_appointment/{{ user_id }}">Lista Prenotazioni</a>
+          </li>
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('profile', user_id=current_user.id) }}">Profilo</a>
+          </li>
           {% endif %}
-          <li class="nav-item"><a class="nav-link" href="{{ url_for('profile/{{ current_user.id }}') }}">Profilo</a></li>
-          <!-- Navbar dropdown -->
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-mdb-toggle="dropdown"
-              aria-expanded="false">
-              Dropdown
-            </a>
-            <!-- Dropdown menu -->
-            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <li>
-                <a class="dropdown-item" href="#">Action</a>
-              </li>
-              <li>
-                <a class="dropdown-item" href="#">Another action</a>
-              </li>
-              <li>
-                <hr class="dropdown-divider" />
-              </li>
-              <li>
-                <a class="dropdown-item" href="#">Something else here</a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
-          </li>
         </ul>
         <!-- Left links -->
       </div>
       <div class="d-flex align-items-center">
 
-
+        {% if not current_user.is_authenticated %}
         <!-- Button login_signup -->
-        <button type="button" class="btn btn-primary" data-mdb-toggle="modal" data-mdb-target="#exampleModal" href="{{ url_for('login_signup') }}">
+        <button type="button" class="btn btn-primary" data-mdb-toggle="modal" data-mdb-target="#modal-signin">
           Sign in/up
         </button>
-
+        {% endif %}
 
 
         <!-- Avatar -->
+        {% if current_user.is_authenticated %}
         <a class="dropdown-toggle d-flex align-items-center hidden-arrow" href="#" id="navbarDropdownMenuLink"
           role="button" data-mdb-toggle="dropdown" aria-expanded="false">
           <img src="https://mdbootstrap.com/img/new/avatars/2.jpg" class="rounded-circle" height="25" alt=""
             loading="lazy" />
         </a>
         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink">
-          {% if current_user.is_authenticated %}
           <li>
             <a class="dropdown-item" href="{{ url_for('logout') }}">Log Out</a>
           </li>
-          {% else %}
-          <li>
-            <a class="dropdown-item" href="{{ url_for('login') }}">Sign In</a>
-          </li>
-          <li>
-            <a class="dropdown-item" href="{{ url_for('signup') }}">Sign Up</a>
-          </li>
-          {% endif %}
         </ul>
+        {% endif %}
       </div>
       <!-- Collapsible wrapper -->
     </div>

@@ -43,7 +43,7 @@ def profile_login():
 
     user = User.query.filter_by(username=login_data['username']).first()
     if not user:
-        return json.dumps({'username': "Username invalido"}), 400
+        return json.dumps({'username_login': "Username invalido"}), 400
 
     if check_password_hash(user.password, login_data['password']):
         return json.dumps({'user_id': user.id}), 200
@@ -302,16 +302,21 @@ def add_appointment_api():
     return json.dumps({'appointment_id': new_appointment.id}), 200
 
 
-@app.route('/api/user_profile', methods=['GET'])
+@app.route('/api/user_profile', methods=['POST','GET'])
 @login_required
 def user_profile_api():
+
     requested_user = request.json
-    user_data = User.query.filter_by(id=requested_user['user_id'])
 
-    user_data_serializable = []
-    user_data_serializable = user_data.as_dict()
+    if current_user.id == requested_user['user_id']:
 
-    return
+        user_data = User.query.filter_by(id=requested_user['user_id']).first()
+  
+
+        return {'user_data': user_data.as_dict()}, 200
+    
+    else:
+        return {'error': "Richiesta fatta da utente non proprietario del profilo"}, 400
 
 
 @app.route('/api/update_user_profile', methods=['PUT'])
@@ -319,13 +324,27 @@ def user_profile_api():
 def update_user_profile_api():
     
     user_data = request.json
-    update_user_data = User.query.filter_by(id=user_data['user_id']).first()
-    update_user_data.name = user_data['name']
-    update_user_data.surname = user_data['surname']
-    update_user_data.sex = user_data['sex']
-    update_user_data.birth_date = user_data['birth_date']
-    update_user_data.tel_number = user_data['tel_number']
-    update_user_data.description = user_data['description']
 
-    db.session.commit()
+    if current_user.id == user_data['user_id']:
 
+        update_user_data = User.query.filter_by(id=user_data['user_id']).first()
+
+        print("\n\n\n\n\n")
+        print("Query fatta")
+        print("\n\n\n\n\n")
+        update_user_data.name = user_data['name']
+        update_user_data.surname = user_data['surname']
+        update_user_data.sex = user_data['sex']
+        update_user_data.birth_date = date.fromisoformat(user_data['birth_date'])
+        update_user_data.tel_number = user_data['tel_number']
+        update_user_data.description = user_data['description']
+
+        db.session.commit()
+        print("\n\n\n\n\n")
+        print("Commit fatto")
+        print("\n\n\n\n\n")
+        return {'message': 'Dati inviati con successo'}, 200
+
+    else:
+
+        return {'error': "Richiesta fatta da utente non proprietario del profilo"}, 400
