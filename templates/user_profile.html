@@ -2,7 +2,12 @@
 
 {% block content %}
     <div>
-      <form method="POST" action="{{ url_for('profile', user_id=current_user.id) }}">
+      <form method="POST" action="{{ url_for('profile', user_id=current_user.id) }}" enctype="multipart/form-data">
+        {{ profilepicture_form.hidden_tag() }}
+        <div class="form-group"> 
+          <img src="{{ immagine }}" alt="Circle Image" class="img-raised rounded-circle img-fluid">
+          {{ profilepicture_form.image(accept="image/*", disabled=non_modificabile)}}
+        </div>
         {{ form.hidden_tag() }}
         <div class="form-group">
           {{ form.name.label(class="form-control-label") }}

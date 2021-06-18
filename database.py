@@ -17,6 +17,7 @@ class User(UserMixin, db.Model):
     surname = db.Column(db.String(20), default="Non Inserito")
     birth_date = db.Column(db.Date, default=datetime.utcnow)
     description = db.Column(db.String(200), default="Non inserito")
+    picture = db.Column(db.String(40), default='/static/img/users/default.png')
 
     def __repr__(self):
         return f"User('{self.id}', '{self.username}', '{self.password}', '{self.email}', '{self.user_type}')"
@@ -33,7 +34,8 @@ class User(UserMixin, db.Model):
             'name': self.name,
             'surname': self.surname,
             'birth_date': self.birth_date.isoformat(),
-            'description': self.description
+            'description': self.description,
+            'picture': self.picture
         }
 
 

@@ -1,6 +1,9 @@
+from posixpath import split
 from flask_wtf import form
+from werkzeug.utils import secure_filename
+from os import path, makedirs, remove
 from api import *
-
+from app import current_dir
 first_click = True
 
 @app.route('/', methods=['GET', 'POST'])
@@ -303,6 +306,31 @@ def profile(user_id):
         cookies=request.cookies
     )
 
+    profilepicture_form = ProfilePictureForm()
+
+
+    # New Profile Picture?
+    if profilepicture_form.image.data:
+        if profilepicture_form.validate():
+            # Try to remove old picture image
+            if current_user.picture != '/static/img/users/default.png':
+                try:
+                    remove( current_dir + current_user.picture )
+                except OSError:
+                    pass
+            # Save new image as 'user_id.extension'
+            f = profilepicture_form.image.data
+
+            filename = secure_filename(
+                "%s%s" % ( str(current_user.id), path.splitext(f.filename)[-1] )
+            )
+            path_img = path.join(current_dir, 'static', 'img', 'users', filename)
+            f.save(path_img)
+            # Update DB
+            current_user.picture = '/static/img/users/' + filename
+
+            db.session.commit()
+
     if profile_info.ok:
 
         profile_info = profile_info.json()
@@ -311,7 +339,7 @@ def profile(user_id):
 
             if first_click:
                 first_click = False
-                return render_template('user_profile.html', id=current_user.id, form=profile_form, nome=profile_info['user_data']['name'], sesso=profile_info['user_data']['sex'], cognome=profile_info['user_data']['surname'], numero_telefono=profile_info['user_data']['tel_number'], data_nascita=profile_info['user_data']['birth_date'], descrizione=profile_info['user_data']['description'], non_modificabile=False, valore_bottone="Conferma")
+                return render_template('user_profile.html', id=current_user.id, form=profile_form, nome=profile_info['user_data']['name'], sesso=profile_info['user_data']['sex'], cognome=profile_info['user_data']['surname'], numero_telefono=profile_info['user_data']['tel_number'], data_nascita=profile_info['user_data']['birth_date'], descrizione=profile_info['user_data']['description'], non_modificabile=False, valore_bottone="Conferma", profilepicture_form=profilepicture_form, immagine=current_user.picture)
 
             else:
 
@@ -336,7 +364,7 @@ def profile(user_id):
                     profile_info = profile_info.json()
                     return {'error': profile_info['error']}, 400
 
-        return render_template('user_profile.html', id=current_user.id, form=profile_form, nome=profile_info['user_data']['name'], sesso=profile_info['user_data']['sex'], cognome=profile_info['user_data']['surname'], numero_telefono=profile_info['user_data']['tel_number'], data_nascita=profile_info['user_data']['birth_date'], descrizione=profile_info['user_data']['description'], non_modificabile=True, valore_bottone="Modifica")
+        return render_template('user_profile.html', id=current_user.id, form=profile_form, nome=profile_info['user_data']['name'], sesso=profile_info['user_data']['sex'], cognome=profile_info['user_data']['surname'], numero_telefono=profile_info['user_data']['tel_number'], data_nascita=profile_info['user_data']['birth_date'], descrizione=profile_info['user_data']['description'], non_modificabile=True, valore_bottone="Modifica", profilepicture_form=profilepicture_form, immagine=current_user.picture)
         #return render_template('user_profile.html', id=current_user.id, form=profile_form, nome=profile_return['name'], sesso=profile_return['sex'], cognome=profile_return['surname'], numero_telefono=profile_return['tel_number'], data_nascita=profile_return['birth_date'], descrizione=profile_return['description'], non_modificabile=True)
     else:
         profile_info = profile_info.json()

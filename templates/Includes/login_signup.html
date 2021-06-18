@@ -4,23 +4,23 @@
         <div class="modal-content">
             <div class="modal-header">
                 <!-- Tabs navs -->
-                <ul class="nav nav-tabs  nav-fill text-center" id="signin-up-navs" role="tablist">
-                    <li class="nav-item active" role="presentation">
-                        <button class="nav-link active" id="home-tab0" data-mdb-toggle="tab"
-                            data-mdb-target="#signinTab" type="button" role="tab" aria-controls="home"
+                <ul class="nav nav-tabs  nav-fill text-center text-warning " id="signin-up-navs" role="tablist" style="color: wheat;">
+                    <li class="nav-item active" role="presentation" >
+                        <button class="nav-link active " id="home-tab0" data-bs-toggle="tab"
+                            data-bs-target="#signinTab" type="button" role="tab" aria-controls="home"
                             aria-selected="true">
                             Sign in
                         </button>
                     </li>
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="profile-tab0" data-mdb-toggle="tab" data-mdb-target="#signupTab"
+                        <button class="nav-link  " id="profile-tab0" data-bs-toggle="tab" data-bs-target="#signupTab"
                             type="button" role="tab" aria-controls="profile" aria-selected="false">
                             Sign up
                         </button>
                     </li>
                 </ul>
                 <!-- Tabs navs -->
-                <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
 
             <div class="modal-body">
@@ -118,7 +118,7 @@
                                         {{ form_register.usertype.label(class="form-control-label") }}
                                         {{ form_register.usertype }}
                                     </div>
-
+                                    
                                     {{ form_register.register(class="btn btn-warning") }}
 
                                 </form>

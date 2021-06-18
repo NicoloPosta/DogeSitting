@@ -2,11 +2,11 @@
 {% include 'Includes/login_signup.html' %}
 {% endif %}
 <!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-light bg-light " >
+<nav class="navbar navbar-expand-lg navbar-light bg-light ">
   <!-- Container wrapper -->
-  <div class="container-fluid" >
+  <div class="container-fluid">
     <!-- Toggle button -->
-    <button class="navbar-toggler" type="button" data-mdb-toggle="collapse" data-mdb-target="#navbarSupportedContent"
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
       aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <i class="fas fa-bars"></i>
     </button>
@@ -14,8 +14,8 @@
     <!-- Collapsible wrapper -->
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <!-- Navbar brand -->
-      <a class="navbar-brand mt-2 mt-lg-0"  style="margin-left:15px;">
-        <img src="\static\img\doge.png" height="45" alt="" loading="lazy" class="rounded-circle"> 
+      <a class="navbar-brand mt-2 mt-lg-0" style="margin-left:15px;">
+        <img src="\static\img\doge.png" height="45" alt="" loading="lazy" class="rounded-circle">
         DogeSitting
       </a>
 
@@ -47,7 +47,7 @@
 
         {% if not current_user.is_authenticated %}
         <!-- Button login_signup -->
-        <button type="button" class="btn btn-warning" data-mdb-toggle="modal" data-mdb-target="#modal-signin">
+        <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#modal-signin">
           Sign in/up
         </button>
         {% endif %}
@@ -55,16 +55,17 @@
 
         <!-- Avatar -->
         {% if current_user.is_authenticated %}
-        <a class="dropdown-toggle d-flex align-items-center hidden-arrow" href="#" id="navbarDropdownMenuLink"
-          role="button" data-mdb-toggle="dropdown" aria-expanded="false">
-          <img src="https://mdbootstrap.com/img/new/avatars/2.jpg" class="rounded-circle" height="25" alt=""
-            loading="lazy" />
-        </a>
-        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink">
-          <li>
-            <a class="dropdown-item" href="{{ url_for('logout') }}">Log Out</a>
-          </li>
-        </ul>
+        <div class="dropdown">
+          <a class="nav-link dropdown-toggle" id="navbarDarkDropdownMenuLink" role="button"
+            data-bs-toggle="dropdown" aria-expanded="false">
+            <img src="/static/img/users/default.png" class="rounded-circle" height="25" alt="" loading="lazy" />
+          </a>
+          <ul class="dropdown-menu " aria-labelledby="navbarDropdownMenuLink">
+            <li>
+              <a class="dropdown-item" href="{{ url_for('logout') }}">Log Out</a>
+            </li>
+          </ul>
+        </div>
         {% endif %}
       </div>
       <!-- Collapsible wrapper -->

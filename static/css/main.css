@@ -27,3 +27,33 @@ div#searchForm {
 div#carousel-homepage{
     position:relative;
 }
+
+h5.pippo{
+    color:#fff1bf;
+}
+#cacca {
+    margin: 30px 0px;
+    background-color: #816a15;
+    }
+
+    .nav-tabs .nav-item .nav-link {
+        background-color: #0080FF;
+        color: #FFF;
+      }
+      
+      .nav-tabs .nav-item .nav-link.active {
+        color: #0080FF;
+      }
+      
+      .tab-content {
+        border: 1px solid #dee2e6;
+        border-top: transparent;
+        padding: 15px;
+      }
+      
+      .tab-content .tab-pane {
+        background-color: #FFF;
+        color: #0080FF;
+        min-height: 200px;
+        height: auto;
+      }

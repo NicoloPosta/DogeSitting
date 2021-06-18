@@ -1,5 +1,5 @@
-from flask_wtf import FlaskForm 
-from wtforms import StringField, PasswordField, BooleanField, IntegerField, validators, SubmitField
+from flask_wtf import FlaskForm
+from wtforms import StringField, PasswordField, BooleanField, IntegerField, validators, SubmitField, FileField
 from wtforms_components import TimeField, DateField
 from wtforms.fields.html5 import DateTimeLocalField
 from wtforms.validators import InputRequired, Email, Length
@@ -22,7 +22,7 @@ class SearchForm(FlaskForm):
             self.time_end.errors.append("Inserire un orario valido")
             return False
 
-        if self.date.data.strftime('%Y-%m-%d') <= datetime.today().strftime('%Y-%m-%d'):
+        if self.date.data.strftime('%Y-%m-%d') < datetime.today().strftime('%Y-%m-%d'):
             self.date.errors.append("Inserire una data valida")
             return False
 
@@ -38,6 +38,8 @@ class UserForm(FlaskForm):
     description = StringField('Descrizione', validators=[Length(min=1, max=200)])
     submit = SubmitField('Modifica')
 
+class ProfilePictureForm(FlaskForm):
+    image = FileField()
 
 class LoginForm(FlaskForm):
     username = StringField('Username', validators=[InputRequired(), Length(min=4, max=15)])

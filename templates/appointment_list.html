@@ -3,33 +3,52 @@
 {% block content %}
 
 {% include 'Includes/search_bar_app.html' %}
-    <div class="container">
-        <div class="section">
-            <h2>Risultati di Ricerca</h2>
-            <div class="row">
-                {% for appointment in appointments_list %}
-                <div class="col-md-4">
-                  <a href="/book_appointment/{{ appointment['id'] }}/{{ form.time_start.data }}/{{ form.time_end.data }}/{{ form.date.data }}/{{ form.dog_number.data }}/{{ appointment['location'] }}">
-                    <div class="card">
-                        <div class="card-body">
-                            <p class="card-text">
-                                <br>
-                                <!--<p>/book_appointment/{{ appointment['id'] }}/{{ form.time_start.data }}/{{ form.time_end.data }}/{{ form.date.data }}/{{ form.dog_number.data }}/{{ appointment['location'] }}</p>-->
-                                <br>
-                                <strong>Luogo:</strong> {{ appointment['location'] }}
-                                <br>
-                                <strong>Ora Inizo:</strong> {{ appointment['appointment_start'] }}
-                                <br>
-                                <strong>Ora Fine:</strong> {{ appointment['appointment_end'] }}
-                                <br>
-                                <strong>Numero Cani:</strong> {{ appointment['max_dog_number'] }}
-                            </p>
-                        </div>
+<div class="container">
+    <div class="section">
+        <h2>Risultati di Ricerca</h2>
+
+        <div class="row row-cols-1 row-cols-md-2 g-4" style="margin-top: 20px; margin-bottom: 20px;">
+            {% for appointment in appointments_list %}
+            <div class="col-md-4">
+                <div class="card" style="background-color: white; margin-bottom: 15px; color: #ffa500; border-color: black;">
+                    <div class="card-header bg-transparent" style="height: auto;">
+                        <h4> Annuncio di {{ appointment['dogsitter_name'] }}
+                            <img src="\static\img\doge.png" height="35" alt="" loading="lazy" style="text-align:right;">
+                        </h4>
                     </div>
-                  </a>
+                    <div class="card-body" style="height: auto;">
+                        <h5 class="card-text" >
+                            <strong >Luogo:</strong> {{ appointment['location'] }}
+                            <br>
+                            <strong >Ora Inizio:</strong> {{ appointment['appointment_start'] }}
+                            <br>
+                            <strong >Ora Fine:</strong> {{ appointment['appointment_end'] }}
+                            <br>
+                            <strong >Numero Cani:</strong> {{ appointment['max_dog_number'] }}
+                        </h5>
+                    </div>
+
+                    <div class="card-footer bg-transparent" style="text-align: right;">
+                        {% if not current_user.is_authenticated %}
+                        <p> Iscriviti/loggati per prenotare</p>
+                        {% elif current_user.user_type == True%}
+                        <p> Non hai i permessi per prenotare</p>
+                        {% else %}
+                        <button type="button" class="btn btn-warning ">
+                            <a href="/book_appointment/{{ appointment['id'] }}/{{ search_form.time_start.data }}/{{ search_form.time_end.data }}/{{ search_form.date.data }}/{{ search_form.dog_number.data }}/{{ appointment['location'] }}"
+                                style="color: white;">
+                                Prenotati
+                            </a>
+                        </button>
+                        {% endif %}
+                    </div>
+
                 </div>
-                {% endfor %}
             </div>
+            {% endfor %}
         </div>
+       
     </div>
+</div>
+
 {% endblock %}
