@@ -1,77 +1,8 @@
 {% extends "layout.html" %}
 
 {% block content %}
-<div class="col-md-10 ml-auto mr-auto align-items-center">
-  <div class="card card-raised card-form-horizontal"
-    style="margin:auto;">
-    <div class="card-body ">
-      <form class="form" method="POST" action="/index">
-        {{ search_form.hidden_tag() }}
-        <div class="row align-items-center vertical-align-center">
-          <div class="col-md">
-            <div class="form-group bmd-form-group">
-              <label for="inputPlace">Luogo</label>
-              {{ search_form.location(class="form-control") }}
-              {% if search_form.location.errors %}
-              <span class="material-icons form-control-feedback form-control-feedback-custom">clear</span>
-              <label class="control-label control-label-search-custom">{% for error in search_form.location.errors %}{{
-                error }}<br>{% endfor %}</label>
-              {% endif %}
-            </div>
-          </div>
-          <div class="col-md">
-            <div class="form-group bmd-form-group">
-              <label class="label-control">Data</label>
-              {{ search_form.date(class="form-control") }}
-              {% if search_form.date.errors %}
-              <span class="material-icons form-control-feedback form-control-feedback-custom">clear</span>
-              <label class="control-label control-label-search-custom">{% for error in search_form.date.errors %}{{
-                error }}<br>{% endfor %}</label>
-              {% endif %}
-            </div>
-          </div>
-          <div class="col-md">
-            <div class="form-group bmd-form-group">
-              <label class="label-control">Ora Inizio</label>
-              {{ search_form.time_start(class="form-control") }}
-              {% if search_form.time_start.errors %}
-              <span class="material-icons form-control-feedback form-control-feedback-custom">clear</span>
-              <label class="control-label control-label-search-custom">{% for error in search_form.time_start.errors
-                %}{{ error }}<br>{% endfor %}</label>
-              {% endif %}
-            </div>
-          </div>
-          <div class="col-md">
-            <div class="form-group bmd-form-group">
-              <label class="label-control">Ora Fine</label>
-              {{ search_form.time_end(class="form-control") }}
-              {% if search_form.time_end.errors %}
-              <span class="material-icons form-control-feedback form-control-feedback-custom">clear</span>
-              <label class="control-label control-label-search-custom">{% for error in search_form.time_end.errors %}{{
-                error }}<br>{% endfor %}</label>
-              {% endif %}
-            </div>
-          </div>
-          <div class="col-md">
-            <div class="form-group bmd-form-group">
-              <label class="label-control">Numero Cani</label>
-              {{ search_form.dog_number(class="form-control") }}
-              {% if search_form.dog_number.errors %}
-              <span class="material-icons form-control-feedback form-control-feedback-custom">clear</span>
-              <label class="control-label control-label-search-custom">{% for error in search_form.dog_number.errors %}{{
-                error }}<br>{% endfor %}</label>
-              {% endif %}
-            </div>
-          </div>
-          <div class="col-md">
-            {{ search_form.search(class="btn btn-info btn-block") }}
-          </div>
-        </div>
-      </form>
-    </div>
-  </div>
-</div>
-    
+
+{% include 'Includes/search_bar_app.html' %}
     <div class="container">
         <div class="section">
             <h2>Risultati di Ricerca</h2>

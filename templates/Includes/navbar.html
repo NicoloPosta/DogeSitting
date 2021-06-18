@@ -2,9 +2,9 @@
 {% include 'Includes/login_signup.html' %}
 {% endif %}
 <!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav class="navbar navbar-expand-lg navbar-light bg-light " >
   <!-- Container wrapper -->
-  <div class="container-fluid">
+  <div class="container-fluid" >
     <!-- Toggle button -->
     <button class="navbar-toggler" type="button" data-mdb-toggle="collapse" data-mdb-target="#navbarSupportedContent"
       aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -14,8 +14,9 @@
     <!-- Collapsible wrapper -->
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <!-- Navbar brand -->
-      <a class="navbar-brand mt-2 mt-lg-0" href="#">
-        <!-- <img src="{{ url_for('static', filename='img/doge.png') }}" height="45" alt="" loading="lazy" />-->
+      <a class="navbar-brand mt-2 mt-lg-0"  style="margin-left:15px;">
+        <img src="\static\img\doge.png" height="45" alt="" loading="lazy" class="rounded-circle"> 
+        DogeSitting
       </a>
 
       <!-- Collapsible wrapper -->
@@ -35,7 +36,6 @@
           {% elif current_user.is_authenticated %}
           <li class="nav-item"><a class="nav-link" href="{{ url_for('dashboard') }}">Dashboard</a></li>
           <li class="nav-item"><a class="nav-link" href="{{ url_for('appointment_list') }}">Prenotati</a></li>
-          <li class="nav-item"><a class="nav-link" href="/user_booked_appointment/{{ user_id }}">Lista Prenotazioni</a>
           </li>
           <li class="nav-item"><a class="nav-link" href="{{ url_for('profile', user_id=current_user.id) }}">Profilo</a>
           </li>

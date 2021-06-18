@@ -1,0 +1,29 @@
+
+/*div#searchbar{
+    @media (max-width: @screen-sm-min) {
+        margin-left: 100px;
+       
+      }
+}
+div#searchForm {
+    position: absolute;
+    margin-left:157px; 
+    margin-top: 20px; 
+    margin-bottom: 40px;  
+    position:absolute;  
+    z-index:9999999; 
+    top:20px; 
+    left:10px; 
+    right:auto; 
+    bottom:auto;
+    align-items:center;
+    justify-content: center;
+
+
+}
+
+*/
+
+div#carousel-homepage{
+    position:relative;
+}

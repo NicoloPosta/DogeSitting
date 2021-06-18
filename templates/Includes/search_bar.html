@@ -1,0 +1,78 @@
+<div class="col-md-10 ml-auto mr-auto align-items-center" style="    position: absolute;
+margin-left:157px; 
+margin-top: 50px; 
+margin-bottom: 40px;  
+position:absolute;  
+z-index:9999999; 
+top:20px; 
+left:10px;" >
+        <div class="card card-raised card-form-horizontal shadow-lg p-3 mb-5 bg-body rounded"  >
+            <div class="card-body" >
+                <form class="form"  method="POST" action="/">
+                    {{ search_form.hidden_tag() }}
+                    <div class="row align-items-center vertical-align-center">
+                        <div class="col-md">
+                            <div class="form-group bmd-form-group">
+                                <label for="inputPlace">Luogo</label>
+                                {{ search_form.location(class="form-control") }}
+                                {% if search_form.location.errors %}
+                                <label class="control-label control-label-search-custom" style="margin-top: 25px;">{% for error in
+                                    search_form.location.errors %}{{
+                                    error }}<br>{% endfor %}</label>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="col-md">
+                            <div class="form-group bmd-form-group">
+                                <label class="label-control">Data</label>
+                                {{ search_form.date(class="form-control") }}
+                                {% if search_form.date.errors %}
+                                <label class="control-label control-label-search-custom" style="margin-top: 25px;">{% for error in
+                                    search_form.date.errors %}{{
+                                    error }}<br>{% endfor %}</label>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="col-sm">
+                            <div class="form-group bmd-form-group">
+                                <label class="label-control">Ora Inizio</label>
+                                {{ search_form.time_start(class="form-control") }}
+                                {% if search_form.time_start.errors %}
+                                <label class="control-label control-label-search-custom" style="margin-top: 25px;">{% for error in
+                                    search_form.time_start.errors
+                                    %}{{ error }}<br>{% endfor %}</label>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="col-md">
+                            <div class="form-group bmd-form-group">
+                                <label class="label-control">Ora Fine</label>
+                                {{ search_form.time_end(class="form-control") }}
+                                {% if search_form.time_end.errors %}
+                                <label class="control-label control-label-search-custom" style="margin-top: 25px;">{% for error in
+                                    search_form.time_end.errors %}{{
+                                    error }}<br>{% endfor %}</label>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="col-md">
+                            <div class="form-group bmd-form-group">
+                                <label class="label-control">Numero Cani</label>
+                                {{ search_form.dog_number(class="form-control") }}
+                                {% if search_form.dog_number.errors %}
+                                <label class="control-label control-label-search-custom" style="margin-top: 25px;">{% for error in
+                                    search_form.dog_number.errors %}{{
+                                    error }}<br>{% endfor %}</label>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="col-md" >
+                                <label class="label-control"></label>
+                                {{ search_form.search(class="btn btn-info btn-block btn-warning") }}
+                            
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+</div>

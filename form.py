@@ -3,7 +3,7 @@ from wtforms import StringField, PasswordField, BooleanField, IntegerField, vali
 from wtforms_components import TimeField, DateField
 from wtforms.fields.html5 import DateTimeLocalField
 from wtforms.validators import InputRequired, Email, Length
-
+from datetime import datetime
 
 class SearchForm(FlaskForm):
     location = StringField('Posizione', validators=[InputRequired()])
@@ -12,6 +12,22 @@ class SearchForm(FlaskForm):
     time_start = TimeField('Orario inizio', format='%H:%M', validators=[InputRequired()])
     time_end = TimeField('Orario fine', format='%H:%M', validators=[InputRequired()])
     search = SubmitField('Cerca')
+
+    def validate(self):
+        rv = FlaskForm.validate(self)
+        if not rv:
+            return False
+        
+        if self.time_end.data <= self.time_start.data:
+            self.time_end.errors.append("Inserire un orario valido")
+            return False
+
+        if self.date.data.strftime('%Y-%m-%d') <= datetime.today().strftime('%Y-%m-%d'):
+            self.date.errors.append("Inserire una data valida")
+            return False
+
+        return True
+
 
 class UserForm(FlaskForm):
     name = StringField('Nome', validators=[Length(min=1, max=15)])
@@ -43,8 +59,6 @@ class AppointmentForm(FlaskForm):
     time_start = TimeField('Orario inizio', format='%H:%M', validators=[InputRequired()])
     time_end = TimeField('Orario fine', format='%H:%M', validators=[InputRequired()])
 
-
-    
     def validate(self):
         rv = FlaskForm.validate(self)
         if not rv:

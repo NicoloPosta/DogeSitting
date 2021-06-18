@@ -60,10 +60,13 @@ def api_appointment_list():
 
     start_hour = int(time.fromisoformat(search_data['time_start']).strftime("%H"))
 
+    if end_hour <= start_hour:
+        return {'hour_error': "L'ora finale è minore dell'iniziale"}, 404
+
     search_result = AvailableDogsitter.query.filter_by(location=search_data['location'],appointment_day=date.fromisoformat(search_data['date'])).all()
         
     if search_result == []:
-        return {'no_results': "Non ho trovato appuntamenti che soddisfano la ricerca in quel giorno o luogo"}, 400
+        return {'no_results': "Non ho trovato appuntamenti che soddisfano la ricerca in quel giorno o luogo"}, 404
 
     return_list=[]
 
@@ -87,7 +90,7 @@ def api_appointment_list():
                 return_list.append(appointment.as_dict())
     
     if return_list == []:
-        return {'no_results': "Non ho trovato appuntamenti che soddisfano la fascia oraria richiesta o i cani richiesti"}, 400
+        return {'no_results': "Non ho trovato appuntamenti che soddisfano la fascia oraria richiesta o i cani richiesti"}, 404
 
 
     return {'return_list': return_list}, 200

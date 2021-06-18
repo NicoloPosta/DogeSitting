@@ -158,6 +158,9 @@ def user_booked_appointment(requested_user_id):
 @app.route('/appointment_list', methods=['GET','POST'])
 def appointment_list(search_form=None):
 
+    login_form = LoginForm()
+    signup_form = RegisterForm()
+
     if not search_form:
         search_form = SearchForm()
 
@@ -175,13 +178,15 @@ def appointment_list(search_form=None):
 
         if search_return.ok:
             search_return = search_return.json()
-            return render_template('appointment_list.html', appointments_list=search_return['return_list'], search_form=search_form)
+            return render_template('appointment_list.html', appointments_list=search_return['return_list'], search_form=search_form, form_login=login_form, form_register=signup_form)
         else:
             search_return = search_return.json()
             if 'no_results' in search_return:
                 search_form.location.errors = [search_return['no_results']]
+            if 'hour_error' in search_return:
+                search_form.time_start.errors = [search_return['hour_error']]
 
-    return render_template('appointment_list.html', appointments_list=[], search_form=search_form)
+    return render_template('appointment_list.html', appointments_list=[], search_form=search_form, form_login=login_form, form_register=signup_form)
 
 
 
