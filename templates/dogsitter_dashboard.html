@@ -2,4 +2,120 @@
 
 {% block content %}
 
+<div class="container-fluid" id="main_css">
+    <main role="main">
+
+        <div class="jumbotron ">
+            <div class="container">
+                <strong>
+                    <h1 class="display-4">Appuntamenti prenotati</h1>
+                </strong>
+                <p>In questa sezione potrai trovare tutte le prenotazioni effettuate dagli utenti.</p>
+            </div>
+        </div>
+
+        <div class="section" id="prenotazioni">
+            <div class="container">
+                <div class="row">
+                    {% for prenotation in dogsitter_prenotations %}
+                    <div class="col-md-4 " style="margin-top: 20px; margin-bottom: 20px;">
+                        <div class="card" id="card_dashboard">
+                            <div class="card-header" id="card_dashboard"><strong>Prenotazione numero {{ prenotation['id'] }} </strong></div>
+
+                            <div class="card-body">
+
+                                <h5 class="card-text">
+                                    <i class="fas fa-map-marker-alt"></i> <strong>Luogo:</strong> {{
+                                    prenotation['location'] }}
+                                    <br>
+                                    <i class="fas fa-hourglass-start"></i> <strong>Ora Inizio:</strong> {{
+                                    prenotation['appointment_start'] }}
+                                    <br>
+                                    <i class="fas fa-hourglass-end"></i> <strong>Ora Fine:</strong> {{
+                                    prenotation['appointment_end'] }}
+                                    <br>
+                                    <i class="fas fa-calendar-day"></i> <strong>Data:</strong> {{
+                                    prenotation['appointment_date'][0:10] }}
+                                    <br>
+                                    <i class="fas fa-dog"></i> <strong>Numero Cani:</strong> {{
+                                    prenotation['dog_number'] }}
+                                </h5>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <div class="jumbotron">
+            <div class="container">
+                <h1 class="display-4">Disponibilità</h1>
+                <p>In questa sezione potrai vedere e/o cancellare le disponibilità inserite.</p>
+            </div>
+        </div>
+
+
+        <div class="section ">
+            <div class="container">
+                <div class="row">
+                    {% for available in dogsitter_available_appointment %}
+                    <div class="col-md-4 " style="margin-top: 20px; margin-bottom: 20px;">
+                        <div class="card" id="card_dashboard">
+                            <div class="card-header" id="card_dashboard"><strong>Disponibilità per il giorno {{ available['appointment_day']
+                                    }} </strong></div>
+
+                            <div class="card-body">
+
+                                <h5 class="card-text">
+                                    <i class="fas fa-map-marker-alt" id="icona_dashboard"></i> <strong>Luogo:</strong> {{
+                                    available['location']
+                                    }}
+                                    <br>
+                                    <i class="fas fa-hourglass-start" id="icona_dashboard"></i> <strong>Ora Inizio:</strong> {{
+                                    available['appointment_start'] }}
+                                    <br>
+                                    <i class="fas fa-hourglass-end" id="icona_dashboard"></i> <strong>Ora Fine:</strong> {{
+                                    available['appointment_end'] }}
+                                    <br>
+                                    <i class="fas fa-calendar-day" id="icona_dashboard"></i> <strong>Data:</strong> {{
+                                    available['appointment_day'][0:10] }}
+                                    <br>
+                                    <i class="fas fa-dog" id="icona_dashboard"></i> <strong>Numero Massimo Cani:</strong> {{
+                                    available['max_dog_number']
+                                    }}
+                                </h5>
+
+                            </div>
+                            <div class="card-footer text-right" id="card_dashboard"> <a data-toggle="modal" data-target="{{ '#button' + available['id']|string }}" class="btn btn-warning ">Cancella</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal" tabindex="-1" id="{{ 'button' + available['id']|string }}">
+                        <div class="modal-dialog modal-dialog-centered">
+                          <div class="modal-content">
+                              <div class="modal-header" style="border: transparent;">
+                              <button type="button" class="close " data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                           </div>
+                            <div class="modal-body d-block">
+                              <h5 class="card-text text-center">Sei sicuro di voler cancellare?</h5>
+                            </div>
+                            <div class="modal-footer" style="border: transparent;">
+                              <a href="/delete_dogsitter_appointment/{{ available['id'] }}" class="btn btn-warning">Conferma</a>
+                              <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    {% endfor %}
+                </div>
+
+            </div>
+        </div>
+
+    </main>
+</div>
 {% endblock %}

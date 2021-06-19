@@ -189,7 +189,7 @@ def delete_dogsitter_appointment_api():
 
 
 
-@app.route('/api/dogsitter_appointment_list_api', methods=['POST'])
+@app.route('/api/dogsitter_appointment_list_api', methods=['GET'])
 @login_required
 def dogsitter_appointment_list_api():
 
@@ -203,10 +203,18 @@ def dogsitter_appointment_list_api():
 
             availability_list_serializable = []
 
+            prenotation_list_serializable = []
+
             for elem in availability_list:
+                # rendere restfull 
+                prenotation_list = DogsittingAppointment.query.filter_by(appointment_id=elem.id).all()
+
+                for elem_prenotation in prenotation_list:
+                    prenotation_list_serializable.append(elem_prenotation.as_dict())
+
                 availability_list_serializable.append(elem.as_dict())
 
-            return {'return_list': availability_list_serializable}, 200
+            return {'return_list': availability_list_serializable, 'prenotation_list': prenotation_list_serializable}, 200
         else:
             return {'error': 'Richiesta da parte di un utente non dogsitter'}, 400
     else:
@@ -246,7 +254,7 @@ def delete_booked_prenotation_by_id():
     return {'errors': 'Nessun errore riscontrato'}, 200
 
 
-@app.route('/api/user_booked_appointment', methods=['GET', 'POST'])
+@app.route('/api/user_booked_appointment', methods=['GET'])
 @login_required
 def user_booked_appointment_api():
 

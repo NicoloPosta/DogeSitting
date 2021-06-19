@@ -1,161 +1,73 @@
 {% extends "layout.html" %}
 
 {% block content %}
-        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-          <h1 class="page-header">Welcome, {{ name }}</h1>
+<div class="container-fluid" id="main_css">
+  <main role="main">
 
-          <div class="row placeholders">
-            <div class="col-xs-6 col-sm-3 placeholder">
-              <img src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" width="200" height="200" class="img-responsive" alt="Generic placeholder thumbnail">
-              <h4>Label</h4>
-              <span class="text-muted">Something else</span>
-            </div>
-            <div class="col-xs-6 col-sm-3 placeholder">
-              <img src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" width="200" height="200" class="img-responsive" alt="Generic placeholder thumbnail">
-              <h4>Label</h4>
-              <span class="text-muted">Something else</span>
-            </div>
-            <div class="col-xs-6 col-sm-3 placeholder">
-              <img src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" width="200" height="200" class="img-responsive" alt="Generic placeholder thumbnail">
-              <h4>Label</h4>
-              <span class="text-muted">Something else</span>
-            </div>
-            <div class="col-xs-6 col-sm-3 placeholder">
-              <img src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" width="200" height="200" class="img-responsive" alt="Generic placeholder thumbnail">
-              <h4>Label</h4>
-              <span class="text-muted">Something else</span>
+    <div class="jumbotron ">
+      <div class="container">
+        <strong>
+          <h1 class="display-4">Appuntamenti prenotati</h1>
+        </strong>
+        <p>In questa sezione potrai trovare tutte le prenotazioni che hai effettuato.</p>
+      </div>
+    </div>
+
+    <div class="section" id="prenotazioni">
+      <div class="container">
+        <div class="row">
+          {% for prenotation in user_booked_appointments %}
+          <div class="col-md-4 " style="margin-top: 20px; margin-bottom: 20px;">
+            <div class="card" id="card_dashboard">
+              <div class="card-header" id="card_dashboard"><strong>Prenotazione numero {{ prenotation['id'] }} </strong>
+              </div>
+
+              <div class="card-body">
+
+                <h5 class="card-text">
+                  <i class="fas fa-map-marker-alt" id="icona_dashboard"></i> <strong>Luogo:</strong> {{
+                  prenotation['location'] }}
+                  <br>
+                  <i class="fas fa-hourglass-start" id="icona_dashboard"></i> <strong>Ora Inizio:</strong> {{
+                  prenotation['appointment_start'] }}
+                  <br>
+                  <i class="fas fa-hourglass-end" id="icona_dashboard"></i> <strong>Ora Fine:</strong> {{
+                  prenotation['appointment_end'] }}
+                  <br>
+                  <i class="fas fa-calendar-day" id="icona_dashboard"></i> <strong>Data:</strong> {{
+                  prenotation['appointment_date'][0:10] }}
+                  <br>
+                  <i class="fas fa-dog" id="icona_dashboard"></i> <strong>Numero Cani:</strong> {{
+                  prenotation['dog_number'] }}
+                </h5>
+                <div class="card-footer text-right" id="card_dashboard"> <a data-toggle="modal" data-target="{{ '#button' + prenotation['id']|string }}" class="btn btn-warning ">Cancella</a>
+                </div>
+              </div>
             </div>
           </div>
 
-          <h2 class="sub-header">Section title</h2>
-          <div class="table-responsive">
-            <table class="table table-striped">
-              <thead>
-                <tr>
-                  <th>#</th>
-                  <th>Header</th>
-                  <th>Header</th>
-                  <th>Header</th>
-                  <th>Header</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>1,001</td>
-                  <td>Lorem</td>
-                  <td>ipsum</td>
-                  <td>dolor</td>
-                  <td>sit</td>
-                </tr>
-                <tr>
-                  <td>1,002</td>
-                  <td>amet</td>
-                  <td>consectetur</td>
-                  <td>adipiscing</td>
-                  <td>elit</td>
-                </tr>
-                <tr>
-                  <td>1,003</td>
-                  <td>Integer</td>
-                  <td>nec</td>
-                  <td>odio</td>
-                  <td>Praesent</td>
-                </tr>
-                <tr>
-                  <td>1,003</td>
-                  <td>libero</td>
-                  <td>Sed</td>
-                  <td>cursus</td>
-                  <td>ante</td>
-                </tr>
-                <tr>
-                  <td>1,004</td>
-                  <td>dapibus</td>
-                  <td>diam</td>
-                  <td>Sed</td>
-                  <td>nisi</td>
-                </tr>
-                <tr>
-                  <td>1,005</td>
-                  <td>Nulla</td>
-                  <td>quis</td>
-                  <td>sem</td>
-                  <td>at</td>
-                </tr>
-                <tr>
-                  <td>1,006</td>
-                  <td>nibh</td>
-                  <td>elementum</td>
-                  <td>imperdiet</td>
-                  <td>Duis</td>
-                </tr>
-                <tr>
-                  <td>1,007</td>
-                  <td>sagittis</td>
-                  <td>ipsum</td>
-                  <td>Praesent</td>
-                  <td>mauris</td>
-                </tr>
-                <tr>
-                  <td>1,008</td>
-                  <td>Fusce</td>
-                  <td>nec</td>
-                  <td>tellus</td>
-                  <td>sed</td>
-                </tr>
-                <tr>
-                  <td>1,009</td>
-                  <td>augue</td>
-                  <td>semper</td>
-                  <td>porta</td>
-                  <td>Mauris</td>
-                </tr>
-                <tr>
-                  <td>1,010</td>
-                  <td>massa</td>
-                  <td>Vestibulum</td>
-                  <td>lacinia</td>
-                  <td>arcu</td>
-                </tr>
-                <tr>
-                  <td>1,011</td>
-                  <td>eget</td>
-                  <td>nulla</td>
-                  <td>Class</td>
-                  <td>aptent</td>
-                </tr>
-                <tr>
-                  <td>1,012</td>
-                  <td>taciti</td>
-                  <td>sociosqu</td>
-                  <td>ad</td>
-                  <td>litora</td>
-                </tr>
-                <tr>
-                  <td>1,013</td>
-                  <td>torquent</td>
-                  <td>per</td>
-                  <td>conubia</td>
-                  <td>nostra</td>
-                </tr>
-                <tr>
-                  <td>1,014</td>
-                  <td>per</td>
-                  <td>inceptos</td>
-                  <td>himenaeos</td>
-                  <td>Curabitur</td>
-                </tr>
-                <tr>
-                  <td>1,015</td>
-                  <td>sodales</td>
-                  <td>ligula</td>
-                  <td>in</td>
-                  <td>libero</td>
-                </tr>
-              </tbody>
-            </table>
+          <div class="modal" tabindex="-1" id="{{ 'button' + prenotation['id']|string }}">
+            <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content">
+                  <div class="modal-header" style="border: transparent;">
+                  <button type="button" class="close " data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+               </div>
+                <div class="modal-body d-block">
+                  <h5 class="card-text text-center">Sei sicuro di voler cancellare?</h5>
+                </div>
+                <div class="modal-footer" style="border: transparent;">
+                  <a href="/delete_booked_prenotation/{{ prenotation['id'] }}" class="btn btn-warning">Conferma</a>
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+                </div>
+              </div>
+            </div>
           </div>
+          {% endfor %}
         </div>
       </div>
     </div>
+  </main>
+</div>
 {% endblock %}

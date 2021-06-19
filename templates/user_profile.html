@@ -1,42 +1,60 @@
 {% extends "layout.html" %}
 
 {% block content %}
-    <div>
-      <form method="POST" action="{{ url_for('profile', user_id=current_user.id) }}" enctype="multipart/form-data">
-        {{ profilepicture_form.hidden_tag() }}
-        <div class="form-group"> 
-          <img src="{{ immagine }}" alt="Circle Image" class="img-raised rounded-circle img-fluid">
-          {{ profilepicture_form.image(accept="image/*", disabled=non_modificabile)}}
+<div class="container-fluid" id="user_profile">
+
+  <div class="row">
+    <div class="col-md-6 ml-auto mr-auto align-items-center" id="profile_form">
+      <div class="card dim_opacity">
+        <div class="card-body">
+          <form method="POST" action="{{ url_for('profile', user_id=current_user.id) }}" enctype="multipart/form-data">
+            <div class="row justify-content-center align-items-center">
+              {{ profilepicture_form.hidden_tag() }}
+              <img src="{{ immagine }}" alt="Circle Image" class="img-raised rounded-circle img-fluid"
+                style="width: 150px; height: 150px; border: solid #AA7730 2px;">
+            </div>
+            <div class="row justify-content-center align-items-center">
+              <div class="form-group">
+                {{ profilepicture_form.image(accept="image/*", disabled=non_modificabile)}}
+              </div>
+            </div>
+
+            {{ form.hidden_tag() }}
+            <div class="form-group">
+              <strong><i class="fas fa-signature" id="icona_ricerca"></i> {{ form.name.label(class="form-control-label") }}</strong>
+              {{ form.name(class="form-control form.control.lg", readonly=non_modificabile, value=nome) }}
+            </div>
+            <div class="form-group">
+              <strong><i class="fas fa-signature" id="icona_ricerca"></i> {{ form.surname.label(class="form-control-label") }}</strong>
+              {{ form.surname(class="form-control form.control.lg", readonly=non_modificabile, value=cognome) }}
+            </div>
+            <div class="form-group">
+              <strong><i class="fas fa-venus-mars" id="icona_ricerca"></i> {{ form.sex.label(class="form-control-label") }}</strong>
+              {{ form.sex(class="form-control form.control.lg", readonly=non_modificabile, value=sesso) }}
+            </div>
+            <div class="form-group">
+              <strong><i class="fas fa-mobile-alt" id="icona_ricerca"></i> {{ form.tel_number.label(class="form-control-label") }}</strong>
+              {{ form.tel_number(class="form-control form.control.lg", readonly=non_modificabile,
+              value=numero_telefono)
+              }}
+            </div>
+            <div class="form-group">
+              <strong><i class="fas fa-calendar-day" id="icona_ricerca"></i> {{ form.birth_date.label(class="form-control-label") }}</strong>
+              {{ form.birth_date(class="form-control form.control.lg", readonly=non_modificabile, value=data_nascita)
+              }}
+            </div>
+            <div class="form-group">
+              <strong><i class="fas fa-pen" id="icona_ricerca"></i> {{ form.description.label(class="form-control-label") }}</strong>
+              {{ form.description(class="form-control form.control.lg", readonly=non_modificabile, value=descrizione)
+              }}
+            </div>
+            <div class="form-group">
+              {{ form.submit(class=" btn btn-warning ciccio", value=valore_bottone) }}
+            </div>
+          </form>
         </div>
-        {{ form.hidden_tag() }}
-        <div class="form-group">
-          {{ form.name.label(class="form-control-label") }}
-          {{ form.name(class="form-control form.control.lg", readonly=non_modificabile, value=nome) }}
-        </div>
-        <div class="form-group">
-          {{ form.surname.label(class="form-control-label") }}
-          {{ form.surname(class="form-control form.control.lg", readonly=non_modificabile, value=cognome) }}
-        </div>
-        <div class="form-group">
-          {{ form.sex.label(class="form-control-label") }}
-          {{ form.sex(class="form-control form.control.lg", readonly=non_modificabile, value=sesso) }}
-        </div>
-        <div class="form-group">
-          {{ form.tel_number.label(class="form-control-label") }}
-          {{ form.tel_number(class="form-control form.control.lg", readonly=non_modificabile, value=numero_telefono) }}
-        </div>
-        <div class="form-group">
-          {{ form.birth_date.label(class="form-control-label") }}
-          {{ form.birth_date(class="form-control form.control.lg", readonly=non_modificabile, value=data_nascita) }}
-        </div>
-        <div class="form-group">
-          {{ form.description.label(class="form-control-label") }}
-          {{ form.description(class="form-control form.control.lg", readonly=non_modificabile, value=descrizione) }}
-        </div>
-        <div class="form-group">
-          {{ form.submit(class="form-control form.control.lg", value=valore_bottone) }}
-        </div>
-      </form>
+      </div>
     </div>
-   
+  </div>
+</div>
 {% endblock %}

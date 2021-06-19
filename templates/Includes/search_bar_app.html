@@ -1,75 +1,85 @@
 <div class="row align-items-center justify-content-center">
-<div class="col-md-10 ml-auto mr-auto  " >
-        <div class="card card-raised card-form-horizontal shadow-lg p-3 mb-5 bg-body rounded" style="margin-top:10px;" >
+    <div class="col-md-10 ml-auto mr-auto ">
+        <div class="card card-raised card-form-horizontalshadow-lg p-3 mb-5 bg-white rounded" id="search_bar_app">
             <div class="card-body ">
-                <form class="form"  method="POST" action="/appointment_list">
+                <form class="form" method="POST" action="/appointment_list">
                     {{ search_form.hidden_tag() }}
-                    <div class="row align-items-center vertical-align-center">
+                    <div class="row">
                         <div class="col-md">
-                            <div class="form-group bmd-form-group" >
-                                <label class="label-control">Luogo</label>
+                            <div class="form-group bmd-form-group">
+                                <label class="label-control "><i class="fas fa-map-marker-alt" id="icona_ricerca"></i> Luogo</label>
                                 {{ search_form.location(class="form-control") }}
+                                <label class="control-label control-label-search-custom ">
                                 {% if search_form.location.errors %}
-                                <label class="control-label control-label-search-custom">{% for error in
-                                    search_form.location.errors %}
-                                    {{error }}
-                                        {% endfor %}
-                                </label>
+                                    {% for error in search_form.location.errors %}
+                                        {{ error }}
+                                    {% endfor %}
                                 {% endif %}
+                            </label>
                             </div>
                         </div>
                         <div class="col-md">
                             <div class="form-group bmd-form-group">
-                                <label class="label-control">Data</label>
+                                <label class="label-control"><i class="fas fa-calendar-day" id="icona_ricerca"></i> Data</label>
                                 {{ search_form.date(class="form-control") }}
+                                <label class="control-label control-label-search-custom">
                                 {% if search_form.date.errors %}
-                                <label class="control-label control-label-search-custom">{% for error in
-                                    search_form.date.errors %}{{
-                                    error }}<br>{% endfor %}</label>
+                                    {% for error in search_form.date.errors %}
+                                        {{ error }}
+                                    {% endfor %}
                                 {% endif %}
+                                </label>
                             </div>
                         </div>
                         <div class="col-sm">
                             <div class="form-group bmd-form-group">
-                                <label class="label-control">Ora Inizio</label>
+                                <label class="label-control"><i class="fas fa-hourglass-start" id="icona_ricerca"></i> Ora Inizio</label>
                                 {{ search_form.time_start(class="form-control") }}
+                                <label class="control-label control-label-search-custom">
                                 {% if search_form.time_start.errors %}
-                                <label class="control-label control-label-search-custom" >{% for error in
-                                    search_form.time_start.errors
-                                    %}{{ error }}<br>{% endfor %}</label>
+                                    {% for error in search_form.time_start.errors %}
+                                        {{ error }}
+                                    {% endfor %}
                                 {% endif %}
+                            </label>
                             </div>
                         </div>
                         <div class="col-md">
                             <div class="form-group bmd-form-group">
-                                <label class="label-control">Ora Fine</label>
+                                <label class="label-control"><i class="fas fa-hourglass-end" id="icona_ricerca"></i> Ora Fine</label>
                                 {{ search_form.time_end(class="form-control") }}
+                                <label class="control-label control-label-search-custom">
                                 {% if search_form.time_end.errors %}
-                                <label class="control-label control-label-search-custom" >{% for error in
-                                    search_form.time_end.errors %}{{
-                                    error }}<br>{% endfor %}</label>
+                                    {% for error in search_form.time_end.errors %}
+                                        {{ error }}
+                                    {% endfor %}
                                 {% endif %}
+                                </label>
                             </div>
                         </div>
                         <div class="col-md">
                             <div class="form-group bmd-form-group">
-                                <label class="label-control">Numero Cani</label>
+                                <label class="label-control"><i class="fas fa-dog" id="icona_ricerca"></i> Numero Cani</label>
                                 {{ search_form.dog_number(class="form-control") }}
+                                <label class="control-label control-label-search-custom">
                                 {% if search_form.dog_number.errors %}
-                                <label class="control-label control-label-search-custom">{% for error in
-                                    search_form.dog_number.errors %}{{
-                                    error }}<br>{% endfor %}</label>
+                                    {% for error in search_form.dog_number.errors %}
+                                        {{ error }}
+                                    {% endfor %}
                                 {% endif %}
+                            </label>
                             </div>
                         </div>
-                        <div class="col-md" >
-                                <label class="label-control"></label>
-                                {{ search_form.search(class="btn btn-info btn-block btn-warning") }}
-                            
+                        <div class="col-md">
+                            <div class="form-group bmd-form-group">
+                            <label><br></label>
+                            {{ search_form.search(class="btn btn-info btn-block btn-warning") }}
+                            <br>
+                            </div>
                         </div>
                     </div>
                 </form>
             </div>
         </div>
-</div>
+    </div>
 </div>

@@ -79,7 +79,7 @@ def dogsitter_appointment_list(user_id):
 
     user_id = int(user_id)
 
-    return_request = requests.post('http://localhost:5000/api/dogsitter_appointment_list_api',
+    return_request = requests.get('http://localhost:5000/api/dogsitter_appointment_list_api',
         json={
             'user_id': user_id
         },
@@ -106,7 +106,7 @@ def delet_dogsitter_appointment(appointment_id):
         cookies=request.cookies
         )
     if return_request.ok:
-        return redirect(url_for('dogsitter_appointment_list', user_id=current_user.id))
+        return redirect(url_for('dogsitter_dashboard'))
     else:
         return{'errore':'non è stato possibile eliminare la voce selezionata'}
 
@@ -126,9 +126,9 @@ def delete_booked_prenotation(requested_prenotation_id):
     )
 
     if request_return.ok:
-        return redirect(url_for('user_booked_appointment', requested_user_id=current_user.id))
+        return redirect(url_for('dashboard'))
     else:
-        return abort(404)
+        return{'errore':'non è stato possibile eliminare la voce selezionata'}
 
 # va integrata nel calendario utente
 @app.route('/user_booked_appointment/<requested_user_id>', methods=['GET','POST'])
@@ -147,12 +147,14 @@ def user_booked_appointment(requested_user_id):
             json={
                 'id': current_user.id
             },
-            cookies=request.cookies)
+            cookies=request.cookies
+            )
+            
             if user_return.ok:
                 user_return = user_return.json()
                 return render_template('user_booked_appointments.html', user_booked_appointments=user_return['return_list'])
             else:
-                return redirect(url_for('dashboard'))
+                return abort(404)
     else:
         return abort(404)
 
@@ -407,13 +409,47 @@ def signup():
 @app.route('/dashboard')
 @login_required
 def dashboard():
-    return render_template('dashboard.html', name=current_user.username, user_id = current_user.id)
+
+    if(current_user.user_type == True):
+        return redirect(url_for('dogsitter_dashboard'))
+    else:
+
+        user_return = requests.get('http://localhost:5000/api/user_booked_appointment',
+        json={
+            'id': current_user.id
+        },
+        cookies=request.cookies
+        )
+        
+        if user_return.ok:
+            user_return = user_return.json()
+            return render_template('dashboard.html', name=current_user.username, user_id = current_user.id, user_booked_appointments=user_return['return_list'])
+        else:
+            return abort(404)
+
 
 
 @app.route('/dogsitter_dashboard')
 @login_required
 def dogsitter_dashboard():
-    return render_template('dogsitter_dashboard.html', name=current_user.username, id=current_user.id)
+
+    if current_user.user_type != True:
+        return redirect(url_for('dashboard'))
+
+    return_request = requests.get('http://localhost:5000/api/dogsitter_appointment_list_api',
+        json={
+            'user_id': current_user.id
+        },
+        cookies=request.cookies
+    )
+
+    if return_request.ok:
+        return_request = return_request.json()
+        return render_template('dogsitter_dashboard.html', dogsitter_available_appointment=return_request['return_list'], dogsitter_prenotations=return_request['prenotation_list'], name=current_user.username, id=current_user.id)
+    else:
+        return_request = return_request.json()
+        return {'error': return_request['error']}, 404
+
 
 
 @app.route('/logout')

@@ -1,80 +1,87 @@
 {% extends "layout.html" %}
 
 {% block content %}
+<div class="container-fluid" id="appointment_form">
 
-    <div class="container">
+    <div class="row">
+        <div class="col-md-4 ml-auto mr-auto align-items-center" id="profile_form">
+            <div class="card dim_opacity">
+                <div class="card-body ">
+                    <form method="POST" action="/appointment_form">
+                        <strong><h2>Inserisci le informazioni</h2></strong>
+                        {{ form.hidden_tag() }}
+                        <div class="form-group">
+                            <i class="fas fa-dog" id="icona_ricerca"></i> <strong>{{ form.dog_number.label(class="form-control-label") }}</strong>
+                            {% if form.dog_number.errors %}
+                            {{ form.dog_number(class="form-control form-control-lg is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.dog_number.errors %}
+                                <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                            {% else %}
+                            {{ form.dog_number(class="form-control form.control.lg") }}
+                            {% endif %}
+                        </div>
+                        <div class="form-group">
+                            <i class="fas fa-map-marker-alt" id="icona_ricerca"></i> <strong>{{ form.location.label(class="form-control-label") }}</strong>
+                            {% if form.location.errors %}
+                            {{ form.location(class="form-control form-control-lg is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.location.errors %}
+                                <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                            {% else %}
+                            {{ form.location(class="form-control form.control.lg") }}
+                            {% endif %}
+                        </div>
+                        <div class="form-group">
+                            <i class="fas fa-calendar-day" id="icona_ricerca"></i> <strong>{{ form.date.label(class="form-control-label") }}</strong>
+                            {% if form.date.errors %}
+                            {{ form.date(class="form-control form-control-lg is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.date.errors %}
+                                <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                            {% else %}
+                            {{ form.date(class="form-control form.control.lg") }}
+                            {% endif %}
+                        </div>
+                        <div class="form-group">
+                            <i class="fas fa-hourglass-start" id="icona_ricerca"></i> <strong>{{ form.time_start.label(class="form-control-label") }}</strong>
+                            {% if form.time_start.errors %}
+                            {{ form.time_start(class="form-control form-control-lg is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.time_start.errors %}
+                                <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                            {% else %}
+                            {{ form.time_start(class="form-control form.control.lg") }}
+                            {% endif %}
+                        </div>
+                        <div class="form-group">
+                            <i class="fas fa-hourglass-end" id="icona_ricerca"></i> <strong>{{ form.time_end.label(class="form-control-label") }}</strong>
+                            {% if form.time_end.errors %}
+                            {{ form.time_end(class="form-control form-control-lg is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.time_end.errors %}
+                                <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                            {% else %}
+                            {{ form.time_end(class="form-control form.control.lg") }}
+                            {% endif %}
+                        </div>
 
-      <form class="form-signin" method="POST" action="/appointment_form">
-        <h2 class="form-signin-heading">Inserisci le informazioni</h2>
-        {{ form.hidden_tag() }}
-        <div class="form-group">
-          {{ form.dog_number.label(class="form-control-label") }}
-          {% if form.dog_number.errors %}
-              {{ form.dog_number(class="form-control form-control-lg is-invalid") }}
-                  <div class="invalid-feedback">
-                      {% for error in form.dog_number.errors %}
-                          <span>{{ error }}</span>
-                      {% endfor %}
-                  </div>
-          {% else %}
-              {{ form.dog_number(class="form-control form.control.lg") }}
-          {% endif %}
-        </div>
-        <div class="form-group">
-          {{ form.location.label(class="form-control-label") }}
-          {% if form.location.errors %}
-              {{ form.location(class="form-control form-control-lg is-invalid") }}
-                  <div class="invalid-feedback">
-                      {% for error in form.location.errors %}
-                          <span>{{ error }}</span>
-                      {% endfor %}
-                  </div>
-          {% else %}
-              {{ form.location(class="form-control form.control.lg") }}
-          {% endif %}
-        </div>
-        <div class="form-group">
-          {{ form.date.label(class="form-control-label") }}
-          {% if form.date.errors %}
-              {{ form.date(class="form-control form-control-lg is-invalid") }}
-                  <div class="invalid-feedback">
-                      {% for error in form.date.errors %}
-                          <span>{{ error }}</span>
-                      {% endfor %}
-                  </div>
-          {% else %}
-              {{ form.date(class="form-control form.control.lg") }}
-          {% endif %}
-        </div>
-        <div class="form-group">
-          {{ form.time_start.label(class="form-control-label") }}
-          {% if form.time_start.errors %}
-              {{ form.time_start(class="form-control form-control-lg is-invalid") }}
-                  <div class="invalid-feedback">
-                      {% for error in form.time_start.errors %}
-                          <span>{{ error }}</span>
-                      {% endfor %}
-                  </div>
-          {% else %}
-              {{ form.time_start(class="form-control form.control.lg") }}
-          {% endif %}
-        </div>
-        <div class="form-group">
-          {{ form.time_end.label(class="form-control-label") }}
-          {% if form.time_end.errors %}
-              {{ form.time_end(class="form-control form-control-lg is-invalid") }}
-                  <div class="invalid-feedback">
-                      {% for error in form.time_end.errors %}
-                          <span>{{ error }}</span>
-                      {% endfor %}
-                  </div>
-          {% else %}
-              {{ form.time_end(class="form-control form.control.lg") }}
-          {% endif %}
-        </div>
-        
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Conferma</button>
-      </form>
+                        <button class="btn btn-warning ciccio2" type="submit">Conferma</button>
+                    </form>
 
-    </div> <!-- /container -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

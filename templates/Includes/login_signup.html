@@ -4,23 +4,25 @@
         <div class="modal-content">
             <div class="modal-header">
                 <!-- Tabs navs -->
-                <ul class="nav nav-tabs  nav-fill text-center text-warning " id="signin-up-navs" role="tablist" style="color: wheat;">
+                <ul class="nav nav-tabs  nav-fill text-center " id="signin-up-navs" role="tablist" style="color: wheat;">
                     <li class="nav-item active" role="presentation" >
-                        <button class="nav-link active " id="home-tab0" data-bs-toggle="tab"
-                            data-bs-target="#signinTab" type="button" role="tab" aria-controls="home"
+                        <button class="nav-link active " id="home-tab0" data-toggle="tab"
+                            data-target="#signinTab" type="button" role="tab" aria-controls="home"
                             aria-selected="true">
                             Sign in
                         </button>
                     </li>
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link  " id="profile-tab0" data-bs-toggle="tab" data-bs-target="#signupTab"
+                        <button class="nav-link  " id="profile-tab0" data-toggle="tab" data-target="#signupTab"
                             type="button" role="tab" aria-controls="profile" aria-selected="false">
                             Sign up
                         </button>
                     </li>
                 </ul>
                 <!-- Tabs navs -->
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
             </div>
 
             <div class="modal-body">
@@ -58,8 +60,8 @@
                                         {{ form_login.password(class="form-control form.control.lg") }}
                                         {% endif %}
                                     </div>
-
-                                    {{ form_login.login(class="btn btn-warning") }}
+                                    <br>
+                                    {{ form_login.login(class="btn btn-warning btn-lg btn-block") }}
                                 </form>
                             </div>
                         </div>
@@ -114,12 +116,13 @@
                                         {% endif %}
                                     </div>
 
-                                    <div class="form-check">
-                                        {{ form_register.usertype.label(class="form-control-label") }}
-                                        {{ form_register.usertype }}
+                                    <div class="form-group form-check">
+                                        {{ form_register.usertype(class="form-check-input") }}
+                                        {{ form_register.usertype.label(class="form-check-label") }}
+                                     
                                     </div>
                                     
-                                    {{ form_register.register(class="btn btn-warning") }}
+                                    {{ form_register.register(class="btn btn-warning btn-lg btn-block") }}
 
                                 </form>
                             </div>

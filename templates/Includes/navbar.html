@@ -2,7 +2,7 @@
 {% include 'Includes/login_signup.html' %}
 {% endif %}
 <!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-light bg-light ">
+<nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-end">
   <!-- Container wrapper -->
   <div class="container-fluid">
     <!-- Toggle button -->
@@ -18,59 +18,54 @@
         <img src="\static\img\doge.png" height="45" alt="" loading="lazy" class="rounded-circle">
         DogeSitting
       </a>
-
-      <!-- Collapsible wrapper -->
-      <div class="collapse navbar-collapse" id="navbarRightAlignExample">
-        <!-- Left links -->
-        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="/">Home</a>
-          </li>
-          <!-- Pagine navbar per dogsitter-->
-          {% if current_user.is_authenticated and current_user.user_type == True %}
-          <li class="nav-item"><a class="nav-link" href="{{ url_for('dogsitter_dashboard') }}">Dashboard</a></li>
-          <li class="nav-item"><a class="nav-link" href="{{ url_for('appointment_form') }}">Disponibilità</a></li>
-          <li class="nav-item"><a class="nav-link" href="{{ url_for('profile', user_id=current_user.id) }}">Profilo</a>
-          </li>
-          <!-- Pagine navbar per utente normale-->
-          {% elif current_user.is_authenticated %}
-          <li class="nav-item"><a class="nav-link" href="{{ url_for('dashboard') }}">Dashboard</a></li>
-          <li class="nav-item"><a class="nav-link" href="{{ url_for('appointment_list') }}">Prenotati</a></li>
-          </li>
-          <li class="nav-item"><a class="nav-link" href="{{ url_for('profile', user_id=current_user.id) }}">Profilo</a>
-          </li>
-          {% endif %}
-        </ul>
-        <!-- Left links -->
-      </div>
-      <div class="d-flex align-items-center">
-
-        {% if not current_user.is_authenticated %}
-        <!-- Button login_signup -->
-        <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#modal-signin">
-          Sign in/up
-        </button>
-        {% endif %}
-
-
-        <!-- Avatar -->
-        {% if current_user.is_authenticated %}
-        <div class="dropdown">
-          <a class="nav-link dropdown-toggle" id="navbarDarkDropdownMenuLink" role="button"
-            data-bs-toggle="dropdown" aria-expanded="false">
-            <img src="/static/img/users/default.png" class="rounded-circle" height="25" alt="" loading="lazy" />
-          </a>
-          <ul class="dropdown-menu " aria-labelledby="navbarDropdownMenuLink">
-            <li>
-              <a class="dropdown-item" href="{{ url_for('logout') }}">Log Out</a>
-            </li>
-          </ul>
-        </div>
-        {% endif %}
-      </div>
-      <!-- Collapsible wrapper -->
     </div>
-    <!-- Container wrapper -->
+
+    <div class="d-flex align-items-center">
+
+      <ul class="nav justify-content-end pippo">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="/">Home</a>
+        </li>
+        <!-- Pagine navbar per dogsitter-->
+        {% if current_user.is_authenticated and current_user.user_type == True %}
+        <li class="nav-item"><a class="nav-link" href="{{ url_for('dogsitter_dashboard') }}">Dashboard</a></li>
+        <li class="nav-item"><a class="nav-link" href="{{ url_for('appointment_form') }}">Disponibilità</a></li>
+        <li class="nav-item"><a class="nav-link" href="{{ url_for('profile', user_id=current_user.id) }}">Profilo</a>
+        </li>
+        <!-- Pagine navbar per utente normale-->
+        {% elif current_user.is_authenticated %}
+        <li class="nav-item"><a class="nav-link" href="{{ url_for('dashboard') }}">Dashboard</a></li>
+        <li class="nav-item"><a class="nav-link" href="{{ url_for('appointment_list') }}">Prenotati</a></li>
+        </li>
+        <li class="nav-item"><a class="nav-link" href="{{ url_for('profile', user_id=current_user.id) }}">Profilo</a>
+        </li>
+        {% endif %}
+      </ul>
+
+      {% if not current_user.is_authenticated %}
+      <!-- Button login_signup -->
+      <button id="bottone-modal" type="button" class="btn btn-warning" data-toggle="modal" data-target="#modal-signin">
+        Sign in/up
+      </button>
+      {% endif %}
+
+
+      <!-- Avatar -->
+      {% if current_user.is_authenticated %}
+      <div class="dropdown">
+        <a class="nav-link dropdown-toggle" id="navbarDarkDropdownMenuLink" role="button" data-toggle="dropdown"
+          aria-expanded="false">
+          <img src="/static/img/users/default.png" class="rounded-circle" height="25" alt="" loading="lazy" />
+        </a>
+        <ul class="dropdown-menu " aria-labelledby="navbarDropdownMenuLink">
+          <li>
+            <a class="dropdown-item" href="{{ url_for('logout') }}">Log Out</a>
+          </li>
+        </ul>
+      </div>
+      {% endif %}
+    </div>
+ 
 </nav>
 
 <!-- Navbar -->
