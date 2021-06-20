@@ -4,8 +4,8 @@
 <div class="container-fluid" id="user_profile">
 
   <div class="row">
-    <div class="col-md-6 ml-auto mr-auto align-items-center" id="profile_form">
-      <div class="card dim_opacity">
+    <div class="col-md-4 ml-auto mr-auto align-items-center" id="profile_form">
+      <div class="card dim_opacity_profile">
         <div class="card-body">
           <form method="POST" action="{{ url_for('profile', user_id=current_user.id) }}" enctype="multipart/form-data">
             <div class="row justify-content-center align-items-center">
@@ -49,7 +49,7 @@
               }}
             </div>
             <div class="form-group">
-              {{ form.submit(class=" btn btn-warning ciccio", value=valore_bottone) }}
+              {{ form.submit(class=" btn btn-warning ciccio2", value=valore_bottone) }}
             </div>
           </form>
         </div>

@@ -72,6 +72,7 @@ def index():
 def load_user(user_id):
     return User.query.get(int(user_id))
 
+'''
 #va integrata nel calendario
 @app.route('/dogsitter_appointment_list/<user_id>', methods=['POST', 'GET'])
 @login_required
@@ -92,6 +93,7 @@ def dogsitter_appointment_list(user_id):
     else:
         return_request = return_request.json()
         return {'error': return_request['error']}, 404
+'''
 
 # verrà integrata nel calendario del dogsitter
 @app.route('/delete_dogsitter_appointment/<appointment_id>', methods=['GET','POST'])

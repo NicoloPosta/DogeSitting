@@ -1,29 +1,4 @@
 
-/*div#searchbar{
-    @media (max-width: @screen-sm-min) {
-        margin-left: 100px;
-       
-      }
-}
-div#searchForm {
-    position: absolute;
-    margin-left:157px; 
-    margin-top: 20px; 
-    margin-bottom: 40px;  
-    position:absolute;  
-    z-index:9999999; 
-    top:20px; 
-    left:10px; 
-    right:auto; 
-    bottom:auto;
-    align-items:center;
-    justify-content: center;
-
-
-}
-
-*/
-
 a#navbarDarkDropdownMenuLink{
   color: orange!important;
   }
@@ -48,22 +23,10 @@ label.fixed-bar{
   padding-top:150px;
 }
 
-/*
-div#main_css  {
-  background-image: url("/static/img/Doggo1.jpg");
-  background-size: cover;
-}
-
-.jumbotron {
-  margin-top: 15px;
-  background: rgb(212, 202, 202); /* This is for ie8 and below 
-  background: rgba(245, 215, 215, 0.5); 
-}
-*/
 
 .jumbotron {
   background-color: #CEB77E;
-  background: rgb(206, 183, 126); /* This is for ie8 and below */
+  background: rgb(206, 183, 126);
   background: rgba(206, 183, 126, 0.5); 
   width: 80%;
   margin-bottom: auto;
@@ -74,8 +37,7 @@ div#main_css  {
 
 
 div#search_bar_app{
-
-  background: rgb(170, 119, 48); /* This is for ie8 and below */
+  background: rgb(170, 119, 48);
   background: rgba(170, 119, 48,0.5); 
 }
 
@@ -128,6 +90,9 @@ div#search_bar_app{
   background-color: rgba(245, 245, 245, 0.5);
 }
 
+.dim_opacity_profile{
+  background-color: rgba(245, 245, 245, 0.8);
+}
 
 
 div#profile_form{
