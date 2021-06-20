@@ -109,7 +109,7 @@ def delete_booked_prenotation(requested_prenotation_id):
 
     requested_prenotation_id = int(requested_prenotation_id)
     # viene effettuata la richiesta delete all'Api
-    request_return = requests.delete('http://localhost:5000/api/delete_booked_prenotation_by_id',
+    return_request = requests.delete('http://localhost:5000/api/delete_booked_prenotation_by_id',
         json={
             'prenotation_id': requested_prenotation_id
         },
