@@ -48,9 +48,8 @@ class AvailableDogsitter(db.Model):
     appointment_day = db.Column(db.Date, nullable=False)
     appointment_start = db.Column(db.Time, nullable=False)
     appointment_end = db.Column(db.Time, nullable=False)
-    
-    def __repr__(self):
-        return f"User('{self.id}', '{self.dogsitter_id}', '{self.location}', '{self.max_dog_number}', '{self.appointment_day}', '{self.appointment_start}', '{self.appointment_end}')"
+    appointment_cost = db.Column(db.Integer, nullable=False)
+
 
     def as_dict(self):
         return {
@@ -60,7 +59,8 @@ class AvailableDogsitter(db.Model):
             'max_dog_number': self.max_dog_number,
             'appointment_day': self.appointment_day.isoformat(),
             'appointment_start': self.appointment_start.isoformat(),
-            'appointment_end': self.appointment_end.isoformat()
+            'appointment_end': self.appointment_end.isoformat(),
+            'appointment_cost': self.appointment_cost
         }
 
 
@@ -82,6 +82,7 @@ class DogsittingAppointment(db.Model):
     location = db.Column(db.String(200), nullable=False)
     appointment_start = db.Column(db.Time, nullable=False)
     appointment_end = db.Column(db.Time, nullable=False)
+    appointment_cost = db.Column(db.Integer, nullable=False)
 
     def as_dict(self):
         return {
@@ -92,5 +93,6 @@ class DogsittingAppointment(db.Model):
             'appointment_date': self.appointment_date.isoformat(),
             'appointment_start': self.appointment_start.isoformat(),
             'appointment_end': self.appointment_end.isoformat(),
-            'location': self.location
+            'location': self.location,
+            'appointment_cost': self.appointment_cost
         }

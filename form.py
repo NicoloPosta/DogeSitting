@@ -60,7 +60,8 @@ class AppointmentForm(FlaskForm):
     date = DateField('Data appuntamento', validators=[InputRequired()])
     time_start = TimeField('Orario inizio', format='%H:%M', validators=[InputRequired()])
     time_end = TimeField('Orario fine', format='%H:%M', validators=[InputRequired()])
-
+    cost_per_hour = IntegerField('Tariffa Oraria', validators=[InputRequired()])
+    
     def validate(self):
         rv = FlaskForm.validate(self)
         if not rv:

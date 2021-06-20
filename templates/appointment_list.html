@@ -35,6 +35,9 @@
                                 <br>
                                 <i class="fas fa-dog"></i> <strong>Numero Cani:</strong> {{
                                 appointment['max_dog_number'] }}
+                                <br>
+                                <i class="fas fa-euro-sign"></i> <strong>Costo orario:</strong> {{
+                                appointment['appointment_cost'] }}€
                             </h5>
                         </div>
 
@@ -63,7 +66,7 @@
                                             <h5 class="card-text text-center">Sei sicuro di voler prenotare?</h5>
                                         </div>
                                         <div class="modal-footer" style="border: transparent;">
-                                            <a href="/book_appointment/{{ appointment['id'] }}/{{ search_form.time_start.data }}/{{ search_form.time_end.data }}/{{ search_form.date.data }}/{{ search_form.dog_number.data }}/{{ appointment['location'] }}"
+                                            <a href="/book_appointment/{{ appointment['id'] }}/{{ search_form.time_start.data }}/{{ search_form.time_end.data }}/{{ search_form.date.data }}/{{ search_form.dog_number.data }}/{{ appointment['location'] }}/{{ appointment['appointment_cost'] }}"
                                                 class="btn btn-warning">Conferma</a>
                                             <button type="button" class="btn btn-secondary"
                                                 data-dismiss="modal">Chiudi</button>

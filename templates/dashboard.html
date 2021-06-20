@@ -39,6 +39,9 @@
                   <br>
                   <i class="fas fa-dog" id="icona_dashboard"></i> <strong>Numero Cani:</strong> {{
                   prenotation['dog_number'] }}
+                  <br>
+                  <i class="fas fa-euro-sign" id="icona_dashboard"></i> <strong>Costo totale:</strong> {{
+                  prenotation['appointment_cost'] }}€
                 </h5>
                 <div class="card-footer text-right" id="card_dashboard"> <a data-toggle="modal" data-target="{{ '#button' + prenotation['id']|string }}" class="btn btn-warning ">Cancella</a>
                 </div>

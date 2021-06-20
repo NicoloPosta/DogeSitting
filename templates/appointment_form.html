@@ -75,6 +75,19 @@
                             {{ form.time_end(class="form-control form.control.lg") }}
                             {% endif %}
                         </div>
+                        <div class="form-group">
+                            <i class="fas fa-euro-sign"  id="icona_ricerca"></i> <strong>{{ form.cost_per_hour.label(class="form-control-label") }}</strong>
+                            {% if form.cost_per_hour.errors %}
+                            {{ form.cost_per_hour(class="form-control form-control-lg is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.cost_per_hour.errors %}
+                                <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                            {% else %}
+                            {{ form.cost_per_hour(class="form-control form.control.lg") }}
+                            {% endif %}
+                        </div>
 
                         <button class="btn btn-warning ciccio2" type="submit">Conferma</button>
                     </form>
